@@ -69,13 +69,12 @@ public class UDPReceive : MonoBehaviour {
 
 	// init
 	private void init() { 
-		// Endpunkt definieren, von dem die Nachrichten gesendet werden.
-		print("UDPSend.init()");
+
 		// define port
-		port = 8051;
+		port = 8051; 
 		// status
-		print("Sending to 127.0.0.1 : "+port);
-		print("Test-Sending to this Port: nc -u 127.0.0.1  "+port+"");
+		if(debugMode) print("Sending to 127.0.0.1 : "+port);
+		if(debugMode) print("Test-Sending to this Port: nc -u 127.0.0.1  "+port+"");
 	
 		
 		receiveThread = new Thread(new ThreadStart(ReceiveData));
@@ -108,7 +107,9 @@ public class UDPReceive : MonoBehaviour {
 				lastReceivedUDPPacket=lastReceivedUDPPacket.Replace("(", "");
 				lastReceivedUDPPacket=lastReceivedUDPPacket.Replace(")", "");
 
-				if(debugMode) Debug.Log (lastReceivedUDPPacket);
+				if(debugMode) {
+					Debug.Log (lastReceivedUDPPacket);
+				}
 
 				string[] strs = lastReceivedUDPPacket.Split('/');
 				if(strs[0]=="Car"){ 
@@ -240,7 +241,8 @@ public class UDPReceive : MonoBehaviour {
 
 		//Debug.Log (rot);
 		car.transform.rotation = rot;
-		//car.transform.rotation = Quaternion.Slerp (car.transform.rotation,rot,speed * Time.deltaTime);
+
+		//lock car 
 		car.transform.eulerAngles=new Vector3(0,car.transform.eulerAngles.y,0);
 		car.transform.position = new Vector3 (car.transform.position.x, 0, car.transform.position.z);
 
@@ -253,11 +255,20 @@ public class UDPReceive : MonoBehaviour {
 					instance.transform.position=c.pos;
 					//instance.transform.eulerAngles=new Vector3(0,c.rot.y,0);
 					instance.transform.rotation=c.rot;
+					
+				//lock cubes pos
+				instance.transform.eulerAngles=new Vector3(0,instance.transform.eulerAngles.y,0);
+				instance.transform.position = new Vector3 (instance.transform.position.x, 0, instance.transform.position.z);
+
 				}else{
 					GameObject b =GameObject.Find("c_"+c.id);
 					b.transform.position=c.pos;
 					//b.transform.eulerAngles=new Vector3(0,c.rot.y,0);
 				b.transform.rotation=c.rot;
+
+				//lock cube pos
+				b.transform.eulerAngles=new Vector3(0,b.transform.eulerAngles.y,0);
+				b.transform.position = new Vector3 (b.transform.position.x, 0, b.transform.position.z);
 			}
 		}
 
