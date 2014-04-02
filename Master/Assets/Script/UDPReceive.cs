@@ -41,6 +41,9 @@ public class UDPReceive : MonoBehaviour {
 
 	public float speed;
 
+
+	public bool debugMode = false;
+
 	// start from shell
 	private static void Main()  {
 		UDPReceive receiveObj=new UDPReceive();
@@ -105,7 +108,7 @@ public class UDPReceive : MonoBehaviour {
 				lastReceivedUDPPacket=lastReceivedUDPPacket.Replace("(", "");
 				lastReceivedUDPPacket=lastReceivedUDPPacket.Replace(")", "");
 
-				Debug.Log (lastReceivedUDPPacket);
+				if(debugMode) Debug.Log (lastReceivedUDPPacket);
 
 				string[] strs = lastReceivedUDPPacket.Split('/');
 				if(strs[0]=="Car"){ 

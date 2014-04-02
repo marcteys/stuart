@@ -44,6 +44,10 @@ public class AstarAI_light : MonoBehaviour {
 	private GameObject car;
 	private GameObject cible;
 
+
+	public bool debugMode = false;
+
+
 	public void Start () {
 		//Get a reference to the Seeker component we added earlier
 		seeker = GetComponent<Seeker>();
@@ -188,7 +192,7 @@ public void Update () {// Start Update
 
 //	___________ Application force cube
 
-	/*	foreach (GameObject cube in GameObject.FindGameObjectsWithTag("Cube")) {    
+		foreach (GameObject cube in GameObject.FindGameObjectsWithTag("Cube")) {    
 				
 		
 			float dist_cube=Vector3.Distance(transform.position,cube.transform.position );
@@ -199,16 +203,15 @@ public void Update () {// Start Update
 
 		
     
-	int id= (int) nameCube[1];
 			float forceField=receive.get_Cube(nameCube).force;
-			dir=dir+(field*forceField);
+			dir=dir+(field*5);
 			Debug.DrawRay(transform.position,field*2,Color.yellow);
-			Debug.Log( dist_cube); 
+			if(debugMode) Debug.Log (nameCube);
 
 
 		
 		
-		}*/
+		}
 	
 //	___________ Application force cube
 
