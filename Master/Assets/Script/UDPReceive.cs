@@ -181,6 +181,7 @@ public class UDPReceive : MonoBehaviour {
 	// ------------------------------
 	// Refresh CAR
 	// ------------------------------
+
 	void refreshCar(string idcam,string data){
 		string []  datas =data.Split(';');
 				
@@ -236,8 +237,8 @@ public class UDPReceive : MonoBehaviour {
 		//Debug.Log (rot);
 		car.transform.rotation = rot;
 		//car.transform.rotation = Quaternion.Slerp (car.transform.rotation,rot,speed * Time.deltaTime);
-		//car.transform.eulerAngles=new Vector3(0,car.transform.eulerAngles.y,0);
-
+		car.transform.eulerAngles=new Vector3(0,car.transform.eulerAngles.y,0);
+		car.transform.position = new Vector3 (car.transform.position.x, 0, car.transform.position.z);
 
 
 		//Update Cube
