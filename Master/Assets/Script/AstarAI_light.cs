@@ -53,7 +53,7 @@ public class AstarAI_light : MonoBehaviour {
 		seeker = GetComponent<Seeker>();
 
 		com = gameObject.GetComponent<Com>();
-		receive = gameObject.GetComponent<UDPReceive>();
+		receive = GameObject.Find("Camera").GetComponent<UDPReceive>();
 		car= GameObject.Find("Car");
 		cible= GameObject.Find("cible");
 		//Start a new path to the targetPosition, return the result to the OnPathComplete function
@@ -201,15 +201,12 @@ public void Update () {// Start Update
 			field=field.normalized/(dist_cube/2);
 			int nameCube= int.Parse(cube.gameObject.name.Split('_')[1]);
 
-		
-    
+			if(debugMode) Debug.Log (receive);
+
+			
 			float forceField=receive.get_Cube(nameCube).force;
-			dir=dir+(field*5);
+			dir=dir+(field*forceField);
 			Debug.DrawRay(transform.position,field*2,Color.yellow);
-			if(debugMode) Debug.Log (nameCube);
-
-
-		
 		
 		}
 	

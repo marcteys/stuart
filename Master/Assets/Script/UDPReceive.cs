@@ -152,6 +152,7 @@ public class UDPReceive : MonoBehaviour {
 			string []  infos =datas[i].Split(';');
 			if(int.Parse(infos[2])==1){
 				if(!check_idCubes(int.Parse(infos[1]) )){
+					// new cube instance
 					myCubes.Add(new Cube(int.Parse(infos[1]),sTov3(infos[3]),sToQ(infos[4])));
 				}else{
 					Cube tempo=get_Cube(int.Parse(infos[1]));
