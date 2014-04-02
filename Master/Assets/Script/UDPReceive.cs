@@ -1,633 +1,282 @@
-﻿/*
-
- 
-
-    -----------------------
-
-    UDP-Receive (send to)
-
-    -----------------------
-
-    // [url]http://msdn.microsoft.com/de-de/library/bb979228.aspx#ID0E3BAC[/url]
-
-    
-
-    
-
-    // > receive 
-
-    // 127.0.0.1 : 8051
-
-    
-
-    // send
-
-    // nc -u 127.0.0.1 8051
-
- 
-
-*/
-
-using UnityEngine;
-
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
-
 using System;
-
 using System.Text;
-
 using System.Net;
-
 using System.Net.Sockets;
-
 using System.Threading;
 
 
-
 public class UDPReceive : MonoBehaviour {
-	
-
-	
 	// receiving Thread
-	
 	Thread receiveThread; 
-	
-	
-
-
 	public GameObject cible;
 	Vector3 relative;
-
 
 	public GameObject car;
 	public Vector3 pos;
 	public Quaternion rot;
 	public GameObject cam;
 
-
-
 	//voiture 
-
-
 	Vector3[] moy_voit_pos= new Vector3[1];
-
 	Vector3[] moy_voit_rot= new Vector3[1];
 
 	//
-
 	public bool pointerCheck=false;
 	 
 	//public UDPSend udpSend;
-
 	List<Cube> myCubes = new List<Cube>();
 
 	// udpclient object
-	
 	UdpClient client; 
-	
-	
-	
-	// public
-	
-	// public string IP = "127.0.0.1"; default local
-	
 	public int port; // define > init
 	
 	
 	
 	// infos
-	
 	public string lastReceivedUDPPacket="";
-	
 	public string allReceivedUDPPackets=""; // clean up this from time to time!
-	
-	
-
 
 	public float speed;
 
-	
-	
 	// start from shell
-	
-	private static void Main() 
-		
-	{
-		
+	private static void Main()  {
 		UDPReceive receiveObj=new UDPReceive();
-		
 		receiveObj.init();
-		
-		
-		
 		string text="";
-		
-		do
-			
-		{
-			
+		do {
 			text = Console.ReadLine();
-			
 		}
-		
 		while(!text.Equals("exit"));
-		
 	}
 	
 	// start from unity3d
-	
-	public void Start()
-		
-	{
+	public void Start() {
+
 		cible= GameObject.Find("cible");
 		car= GameObject.Find("Car");
 		cam = GameObject.Find ("Camera");
-		//UDPSend	udpSend = cam.GetComponent<UDPSend>();
+
 		init(); 
 
-		//myCubes.Add(new Cube(6,Vector3.zero,Vector3.zero));
 	}
 
 
-	
-	// OnGUI
-	
-
-	
-	
-	
 	// init
-	
-	private void init()
-		
-	{ 
-		
+	private void init() { 
 		// Endpunkt definieren, von dem die Nachrichten gesendet werden.
-		
 		print("UDPSend.init()");
-		
-		
-		
 		// define port
-		
 		port = 8051;
-		
-		
-		
 		// status
-		
 		print("Sending to 127.0.0.1 : "+port);
-		
 		print("Test-Sending to this Port: nc -u 127.0.0.1  "+port+"");
+	
 		
-		
-		
-		
-		
-		// ----------------------------
-		
-		// Abhören
-		
-		// ----------------------------
-		
-		// Lokalen Endpunkt definieren (wo Nachrichten empfangen werden).
-		
-		// Einen neuen Thread für den Empfang eingehender Nachrichten erstellen.
-		
-		receiveThread = new Thread(
-			
-			new ThreadStart(ReceiveData));
-		
+		receiveThread = new Thread(new ThreadStart(ReceiveData));
 		receiveThread.IsBackground = true;
-		
 		receiveThread.Start();
-		
-		
-		
 	}
 	
 	
 	
 	// receive thread 
-	
-	private  void ReceiveData() 
-		
-	{
-		
-		
+	private void ReceiveData() {
 		
 		client = new UdpClient(port);
-		
-		while (true) 
-			
-		{
-			
-			
-			
-			try 
-				
-			{
-				
+		while (true) {
+			try  {
 				// Bytes empfangen.
-				
 				IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
-				
 				byte[] data = client.Receive(ref anyIP);
 				
-				
-				
 				// Bytes mit der UTF8-Kodierung in das Textformat kodieren.
-				
 				string text = Encoding.UTF8.GetString(data);
-				
-				
-				
-				// Den abgerufenen Text anzeigen.
-				
-			//	print(">> " + text);
-				
-				
-				
-				// latest UDPpacket
-				
+
+
+
+				// ------------------------------
+				// PARSING
+				// ------------------------------
+
 				lastReceivedUDPPacket=text;
-			
-				
 				lastReceivedUDPPacket=lastReceivedUDPPacket.Replace("(", "");
 				lastReceivedUDPPacket=lastReceivedUDPPacket.Replace(")", "");
 
-			
-
 				Debug.Log (lastReceivedUDPPacket);
+
 				string[] strs = lastReceivedUDPPacket.Split('/');
-
-			
 				if(strs[0]=="Car"){ 
-
 					refreshCar(strs[1],strs[2]);
-
-				
-				}else if(strs[0]=="Cube"){
-
-
-
+				} 
+				else if(strs[0]=="Cube"){
 					refreshCube(strs[1],strs[2]);
-
-
-
-
-				}else if(strs[0]=="Pointer"){
-
+				}
+				else if(strs[0]=="Pointer"){
 					pointerCheck=true;
 					refreshPointer(strs[1]);
-
-			
 				}else if(strs[0]=="CubeForce"){
-
-
-
 					refreshCubeForce(strs[1]+"/"+strs[2]);
-
-
-
-
-
 				}
-			
-			
-				
-				
-				
 			}
 			
-			catch (Exception err) 
-				
-			{
-				
+			catch (Exception err) {
 				print(err.ToString());
-				
 			}
-			
 		}
-		
 	}
-
-
-
 
 	//REFRESH FORCE DATA
-	
 	void refreshCubeForce(string data){
-
-
-		
 		string []  datas =data.Split('/');
-
-	//	Debug.Log (datas [1]);
-
-
 		get_Cube(int.Parse(datas[0])).force = float.Parse(datas[1]);
-		
-		//relative=sTov3(data);
-		
-		
-		
-		
 	}
-
-
-
 
 	//REFRESH POINTER DATA
-
 	void refreshPointer(string data){
-	
-
-
-		 relative=sTov3(data);
-
-	
-
-
+			 relative=sTov3(data);
 	}
 
-
-
-	//REFRESH CUBE DATA
-
-
+	// ------------------------------
+	// Refresh CUBES
+	// ------------------------------
 	void refreshCube(string idcam, string data){
 
 	   string []  datas =data.Split('|');
-
-
 		for (int i=0; i<datas.Length; i++) {
-
 			string []  infos =datas[i].Split(';');
-
-		
-
-
 			if(int.Parse(infos[2])==1){
-
-			
-
-			if(!check_idCubes(int.Parse(infos[1]) )){
-
-
-				myCubes.Add(new Cube(int.Parse(infos[1]),sTov3(infos[3]),sToQ(infos[4])));
-
+				if(!check_idCubes(int.Parse(infos[1]) )){
+					myCubes.Add(new Cube(int.Parse(infos[1]),sTov3(infos[3]),sToQ(infos[4])));
 				}else{
-
 					Cube tempo=get_Cube(int.Parse(infos[1]));
-
-
 					tempo.moy[int.Parse (idcam)-1]=sTov3(infos[3]);
-
-
 					tempo.pos=tempo.get_pos();
-
 					tempo.rot=sToQ(infos[4]);
-
-
 				}
-		
-		
-			
 			}
-			}
-
-		//myCubes.Add(new Cube(    ));
-
-	
-
+		}
 	}
 
 	//check id 
 	bool check_idCubes(int id){
-
 		bool a = false;
-
 		foreach (Cube c in myCubes) {
-				
 			if(c.id==id) a=true;
-		
 		}
 		return a;
 	}
 
-
-
 	public Cube get_Cube(int id){
-		
 		Cube v=new Cube(0,Vector3.zero,Quaternion.identity);
-		
 		foreach (Cube c in myCubes) {
-			
 			if(c.id==id) v=c;
-			
 		}
-
 		return v;
 	}
 
 
-	//REFRESH CAR DATA
-
+	// ------------------------------
+	// Refresh CAR
+	// ------------------------------
 	void refreshCar(string idcam,string data){
-
 		string []  datas =data.Split(';');
-
-	
-		//if (int.Parse(datas[0]) == 1) {
 				
-		//moy_voit_pos
-
-
 		moy_voit_pos[int.Parse(idcam)-1]=sTov3(datas[1]);
 
 	//	moy_voit_rot[int.Parse(idcam)-1]=sTov3(datas[2]);
-
-
 		Vector3 total_pos= Vector3.zero;
 		Vector3 total_rot =Vector3.zero;
 
-
 		//Average
-		for(int i=0; i<moy_voit_pos.Length;i++){
-
-
-		
-		total_pos+=moy_voit_pos[i];
-
-		}
+			for(int i=0; i<moy_voit_pos.Length;i++){
+				total_pos+=moy_voit_pos[i];
+			}
 		rot = sToQ(datas[2]);
 
 		for(int i=0; i<moy_voit_rot.Length;i++){
-
 			//rotation
 			//Debug.Log(sToQ(datas[2]));
-		
-
-
-
 		}
 
 
 		//Debug.Log((total_rot.x/2)%180);
-
 		//rot=moy_voit_rot[1];//sTov3(datas[2]);
-
-
 		//rot
-
 		//Debug.Log(rot.y%360);
 		pos=total_pos/moy_voit_pos.Length;
-
 		//rot=;
-
-
-
 		//rot.y=sTov3(datas[2]).y;
 		//Debug.Log (total_pos);
-
-
-		
-
-
-
-
-
-
 		//Debug.Log (rot.y+"  ///  1:"+moy_voit_rot[0].y%360+" ////2:"+moy_voit_rot[1].y%360);
-
 			//pos=sTov3(datas[1]);
-
 			//rot=sTov3(datas[2]);
-
-		
 		//}
-
-
-
-
 	}
-
-
-
 
 	Vector3 sTov3(string text){
-
-	string[] pos_str=text.Split(',');
+		string[] pos_str=text.Split(',');
 		return	new Vector3( float.Parse(pos_str[0]) ,float.Parse(pos_str[1]) , float.Parse(pos_str[2])  );
-	
 	}
 
-
 	Quaternion sToQ(string text){
-		
 		string[] pos_str=text.Split(',');
-
 		return	new Quaternion( float.Parse(pos_str[0]) ,float.Parse(pos_str[1]) , float.Parse(pos_str[2]),float.Parse(pos_str[3])  );
-		
 	}
 
 
 	void Update () {
-
 		//Update Cible
-	
-
 	
 		//Update Car
 	     car.transform.position = pos;
 
 		//Debug.Log (rot);
-
 		car.transform.rotation = rot;
 		//car.transform.rotation = Quaternion.Slerp (car.transform.rotation,rot,speed * Time.deltaTime);
-
-	//	car.transform.eulerAngles=new Vector3(0,car.transform.eulerAngles.y,0);
+		//car.transform.eulerAngles=new Vector3(0,car.transform.eulerAngles.y,0);
 
 
 
 		//Update Cube
-
-
-
 		foreach(Cube c in myCubes){
-
-
-
 			if(GameObject.Find("c_"+c.id) == null ){
-
-
-				
 					GameObject instance = Instantiate(Resources.Load("c_1", typeof(GameObject))) as GameObject;
 					instance.name="c_"+c.id;
 					instance.transform.position=c.pos;
 					//instance.transform.eulerAngles=new Vector3(0,c.rot.y,0);
-				instance.transform.rotation=c.rot;
-
-				
+					instance.transform.rotation=c.rot;
 				}else{
-
-
-
 					GameObject b =GameObject.Find("c_"+c.id);
 					b.transform.position=c.pos;
-
 					//b.transform.eulerAngles=new Vector3(0,c.rot.y,0);
 				b.transform.rotation=c.rot;
-
 			}
-
-
 		}
 
-
-
-
-
 		if(pointerCheck){
-
-		cible.transform.position=car.transform.position-relative;
-		
-		
+			cible.transform.position=car.transform.position-relative;
 			pointerCheck=false;
 		}
 
-		//Debug.Log (pos);
-
-
 	}
-	// getLatestUDPPacket
-	
-	// cleans up the rest
-	
-	public string getLatestUDPPacket()
-		
-	{
-		
+
+
+	// end UDP
+	public string getLatestUDPPacket() {
 		allReceivedUDPPackets="";
-		
 		return lastReceivedUDPPacket;
-		
 	}
 
-	void OnDisable() 
-	{ 
+	void OnDisable() { 
 		if ( receiveThread!= null) 
 			receiveThread.Abort(); 
-		
 		client.Close(); 
 	} 
 
 	float Map(this float value,  float low1,  float high1,  float low2,  float high2){
-		
-		
 		return low2 + (value - low1) * (high2 - low2) / (high1 - low1);
 	}
 }
@@ -636,8 +285,7 @@ public class UDPReceive : MonoBehaviour {
 
 
 
-public class Cube
-{
+public class Cube {
 	public Vector3 pos;
 	public Quaternion rot;
 	public float force=0;
@@ -646,8 +294,7 @@ public class Cube
 	public Vector3[] moy= new Vector3[1];
 
 
-	public Cube(int aid ,Vector3 apos, Quaternion arot)
-	{
+	public Cube(int aid ,Vector3 apos, Quaternion arot) {
 		pos = apos;
 		rot = arot;
 		id = aid;
@@ -655,19 +302,15 @@ public class Cube
 
 
 	public Vector3 get_pos(){
-
 		total= Vector3.zero;
 
-
 		for(int i=0; i<moy.Length; i++){
-
 			total= total+moy[i];
-
 		}
 
 		return total/moy.Length;
-
 	}
+
 }
 
 
