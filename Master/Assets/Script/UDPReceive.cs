@@ -260,7 +260,7 @@ public class UDPReceive : MonoBehaviour {
 
 			
 
-				//Debug.Log (lastReceivedUDPPacket);
+				Debug.Log (lastReceivedUDPPacket);
 				string[] strs = lastReceivedUDPPacket.Split('/');
 
 			
@@ -377,7 +377,7 @@ public class UDPReceive : MonoBehaviour {
 			if(!check_idCubes(int.Parse(infos[1]) )){
 
 
-				myCubes.Add(new Cube(int.Parse(infos[1]),sTov3(infos[3]),sTov3(infos[4])));
+				myCubes.Add(new Cube(int.Parse(infos[1]),sTov3(infos[3]),sToQ(infos[4])));
 
 				}else{
 
@@ -389,7 +389,7 @@ public class UDPReceive : MonoBehaviour {
 
 					tempo.pos=tempo.get_pos();
 
-					tempo.rot=sTov3(infos[4]);
+					tempo.rot=sToQ(infos[4]);
 
 
 				}
@@ -422,7 +422,7 @@ public class UDPReceive : MonoBehaviour {
 
 	public Cube get_Cube(int id){
 		
-		Cube v=new Cube(0,Vector3.zero,Vector3.zero);
+		Cube v=new Cube(0,Vector3.zero,Quaternion.identity);
 		
 		foreach (Cube c in myCubes) {
 			
@@ -463,13 +463,13 @@ public class UDPReceive : MonoBehaviour {
 		total_pos+=moy_voit_pos[i];
 
 		}
-
+		rot = sToQ(datas[2]);
 
 		for(int i=0; i<moy_voit_rot.Length;i++){
 
 			//rotation
 			//Debug.Log(sToQ(datas[2]));
-			rot = sToQ(datas[2]);
+		
 
 
 
@@ -544,10 +544,12 @@ public class UDPReceive : MonoBehaviour {
 		//Update Car
 	     car.transform.position = pos;
 
-		Debug.Log (rot);
-		car.transform.rotation= Quaternion.Slerp (car.transform.rotation,rot,speed * Time.deltaTime);
+		//Debug.Log (rot);
 
-		car.transform.eulerAngles=new Vector3(0,car.transform.eulerAngles.y,0);
+		car.transform.rotation = rot;
+		//car.transform.rotation = Quaternion.Slerp (car.transform.rotation,rot,speed * Time.deltaTime);
+
+	//	car.transform.eulerAngles=new Vector3(0,car.transform.eulerAngles.y,0);
 
 
 
@@ -566,8 +568,8 @@ public class UDPReceive : MonoBehaviour {
 					GameObject instance = Instantiate(Resources.Load("c_1", typeof(GameObject))) as GameObject;
 					instance.name="c_"+c.id;
 					instance.transform.position=c.pos;
-					instance.transform.eulerAngles=new Vector3(0,c.rot.y,0);
-
+					//instance.transform.eulerAngles=new Vector3(0,c.rot.y,0);
+				instance.transform.rotation=c.rot;
 
 				
 				}else{
@@ -577,8 +579,8 @@ public class UDPReceive : MonoBehaviour {
 					GameObject b =GameObject.Find("c_"+c.id);
 					b.transform.position=c.pos;
 
-					b.transform.eulerAngles=new Vector3(0,c.rot.y,0);
-
+					//b.transform.eulerAngles=new Vector3(0,c.rot.y,0);
+				b.transform.rotation=c.rot;
 
 			}
 
@@ -630,17 +632,21 @@ public class UDPReceive : MonoBehaviour {
 	}
 }
 
+
+
+
+
 public class Cube
 {
 	public Vector3 pos;
-	public Vector3 rot;
+	public Quaternion rot;
 	public float force=0;
 	public int id;
 	public Vector3 total;
 	public Vector3[] moy= new Vector3[1];
 
 
-	public Cube(int aid ,Vector3 apos, Vector3 arot)
+	public Cube(int aid ,Vector3 apos, Quaternion arot)
 	{
 		pos = apos;
 		rot = arot;

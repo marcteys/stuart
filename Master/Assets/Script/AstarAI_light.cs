@@ -258,11 +258,11 @@ public class AstarAI_light : MonoBehaviour {
 
 		
 
-		    com.m1_2=(byte) Map(angle,-180,180,255,0);
-			com.m1_1=(byte) Map(angle,-180,180,0,255);
+		   //com.m1_2=(byte) Map(angle,-180,180,255,0);
+			//com.m1_1=(byte) Map(angle,-180,180,0,255);
 
-			com.m2_2=(byte) Map(angle,-180,180,255,0);
-			com.m2_1=(byte) Map(angle,-180,180,0,255);
+			//com.m2_2=(byte) Map(angle,-180,180,255,0);
+			//com.m2_1=(byte) Map(angle,-180,180,0,255);
 
 			//if(angle>0)com.m1_1=0;
 			//if(com.m1_1>0)com.m1_2=0;
@@ -274,7 +274,7 @@ public class AstarAI_light : MonoBehaviour {
 
 //		com.m1_1= (byte) Map(angle,-180,180,100,0);
 
-			/*if(angle<1 && angle>1 ){
+			if(angle>-10 && angle<10 ){
 
 				com.m1_1=100;
 				com.m2_1=100;
@@ -295,9 +295,9 @@ public class AstarAI_light : MonoBehaviour {
 				com.m1_1=100;
 
 			}
-*/
 
-			Debug.Log(com.m2_1+" :: "+com.m1_1);
+
+
 
 		}else{
 
@@ -447,6 +447,9 @@ public class AstarAI_light : MonoBehaviour {
 
 
 
+	void OnDisable(){
 
+		stopCar();
+	}
 
 } 
