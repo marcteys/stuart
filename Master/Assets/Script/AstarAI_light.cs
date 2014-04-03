@@ -44,6 +44,9 @@ public class AstarAI_light : MonoBehaviour {
 	private GameObject car;
 	private GameObject cible;
 
+
+	public bool emergencyStop = false;
+
 	public void Start () {
 		//Get a reference to the Seeker component we added earlier
 		seeker = GetComponent<Seeker>();
@@ -253,7 +256,7 @@ float dist=Vector3.Distance(car.transform.position,cible.transform.position);
 
 */
 
-		if(dist>1){
+		if(dist>1 && !emergencyStop){
 
 
 
