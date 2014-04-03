@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ClickDetection : MonoBehaviour {
 
-
+	public bool debugMode = false;
 
 	public Transform ground;
 	
@@ -40,6 +40,8 @@ public class ClickDetection : MonoBehaviour {
 		if(Input.GetMouseButtonDown(0)){
 			PlacePoint();
 		}	
+		Debug.DrawRay (Vector3.zero,pointerVector,Color.green);
+		Debug.Log (pointerVector);
 	}
 
 
@@ -50,8 +52,10 @@ public class ClickDetection : MonoBehaviour {
 
 			if(hit.transform.CompareTag( tagGround )){
 				Debug.Log(hit.point);
-				if(tmpSelect) Destroy (tmpSelect);
-				//tmpSelect = Instantiate(dotPrefab, hit.point, Quaternion.identity) as GameObject;
+				if(debugMode){
+					if(tmpSelect) Destroy (tmpSelect);
+					tmpSelect = Instantiate(dotPrefab, hit.point, Quaternion.identity) as GameObject;
+				}
 
 				CalculatePos(hit.point);
 			}
@@ -63,12 +67,12 @@ public class ClickDetection : MonoBehaviour {
 	}
 
 	void CalculatePos(Vector3 pointPos) {
+			
+		pointerVector =   pointPos - car.transform.position;
 
-		pointerVector = pointPos - car.transform.position;
+		pointerVector = new Vector3(pointerVector.x,0,pointerVector.z);
 
-		Debug.Log(pointerVector);
 		string pointerString = pointerVector.ToString("G4").Replace("(","").Replace(")","");
-		Debug.DrawRay (pointerVector,Vector3.zero,Color.green);
 
 		for(int i = 0; i < 3 ; i++) {
 			udpSend.sendString("Pointer/"+pointerString+"\n");

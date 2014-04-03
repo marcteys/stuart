@@ -119,7 +119,6 @@ public class UDPReceive : MonoBehaviour {
 				if(datas[0] == "Pointer") {
 					newPos = sTov3(datas[1]);
 					if(debugMode) Debug.Log("New pos ! : " + newPos);
-
 				}
 
 
@@ -154,6 +153,12 @@ public class UDPReceive : MonoBehaviour {
 
 	void Update() {
 		pointer.position = newPos + car.position ;
+		pointer.position = new Vector3(pointer.position.x,-0.8f,pointer.position.z);
+
+		Debug.DrawRay(Vector3.zero,newPos,Color.blue);
+
+
+
 	}
 
 
