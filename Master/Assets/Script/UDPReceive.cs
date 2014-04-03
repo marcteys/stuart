@@ -124,6 +124,7 @@ public class UDPReceive : MonoBehaviour {
 				else if(strs[0]=="Pointer"){
 					pointerCheck=true;
 					refreshPointer(strs[1]);
+
 				}else if(strs[0]=="CubeForce"){
 					refreshCubeForce(strs[1]+"/"+strs[2]);
 				}
@@ -262,7 +263,7 @@ public class UDPReceive : MonoBehaviour {
 		float min = 9999;
 		int idMin = 0;
 		for (int i = 0; i < allPos.Length; i++) {
-			if(allPos[i] != null ) {
+			if(allPos[i] != Vector3.zero ) {
 				float distance = Vector3.Distance (car.transform.position, allPos[i]);
 				if(distance < min && distance != 0) {
 					min = distance;
@@ -342,7 +343,7 @@ public class Cube {
 	public float force=0;
 	public int id;
 	public Vector3 total;
-	public Vector3[] moy= new Vector3[1];
+	public Vector3[] moy= new Vector3[2];
 
 
 	public Cube(int aid ,Vector3 apos, Quaternion arot) {

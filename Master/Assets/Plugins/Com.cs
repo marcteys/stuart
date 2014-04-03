@@ -35,7 +35,7 @@ public class Com : MonoBehaviour {
 
 
 		sp.Open();
-		InvokeRepeating("RepeatingSend", 1, 0.1f);
+		InvokeRepeating("RepeatingSend", 0.001f, 0.1f);
 	}
 
 	void RepeatingSend () {

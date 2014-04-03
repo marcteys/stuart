@@ -133,9 +133,10 @@ public class UDPSend : MonoBehaviour
 	public void refreshVector(){
 
 
+		Vector3 cibletempo = new Vector3 (cible.transform.position.x, 0, cible.transform.position.z);
+		Vector3 cartempo = new Vector3 (car.transform.position.x, 0, car.transform.position.z);
 
-
-		Vector3 vector= cible.transform.position-car.transform.position;
+		Vector3 vector= cibletempo-cartempo;
 		//vector=Quaternion.AngleAxis(180,Vector3.up);
 	
 
@@ -157,12 +158,12 @@ public class UDPSend : MonoBehaviour
 		print("UDPSend.init()");
 		
 		
-		
+
 		// define
 		
 	//	IP="192.168.0.17";
 		
-	//	port=8051;
+	//	port=8053;
 		
 		
 		
