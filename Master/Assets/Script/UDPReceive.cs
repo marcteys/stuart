@@ -71,7 +71,7 @@ public class UDPReceive : MonoBehaviour {
 	private void init() { 
 
 		// define port
-		port = 8051; 
+	//	port = 8052; 
 		// status
 		if(debugMode) print("Sending to 127.0.0.1 : "+port);
 		if(debugMode) print("Test-Sending to this Port: nc -u 127.0.0.1  "+port+"");
