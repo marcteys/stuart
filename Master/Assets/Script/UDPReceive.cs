@@ -349,7 +349,7 @@ public class Cube {
 	public float force=0;
 	public int id;
 	public Vector3 total;
-	public Vector3[] moy= new Vector3[2];
+	public Vector3[] moy= new Vector3[1];
 
 
 	public Cube(int aid ,Vector3 apos, Quaternion arot) {
