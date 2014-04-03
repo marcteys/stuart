@@ -44,7 +44,7 @@ public class UDPSend : MonoBehaviour {
 		init(); 
 
 		InvokeRepeating("RepeatingFunctionCube", 1, 0.6f);
-		InvokeRepeating("RepeatingFunctionCar", 1, 0.05f);
+		InvokeRepeating("RepeatingFunctionCar", 1, 0.2f);
 	}
 
 
@@ -133,6 +133,7 @@ public class UDPSend : MonoBehaviour {
 
 	// sendData
 	private void sendString(string message) {
+		Debug.Log (message);
 		try {
 			byte[] data = Encoding.UTF8.GetBytes(message);
 			client.Send(data, data.Length, remoteEndPoint);
