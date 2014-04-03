@@ -219,6 +219,8 @@ float dist=Vector3.Distance(car.transform.position,cible.transform.position);
 
 //	___________ Arduino Car AI
 
+		/*
+
 		if(dist>1){
 		
 			if(angle>-10 && angle<10 ){
@@ -248,6 +250,73 @@ float dist=Vector3.Distance(car.transform.position,cible.transform.position);
 			stopCar();
 
 		}
+
+*/
+
+		if(dist>1){
+
+
+
+			if(angle<90 && angle> -90){
+
+				com.m1_2=0;
+				com.m1_1=(byte) Map(angle,-90,90,255,100);
+
+				com.m2_2=0;
+				com.m2_1=(byte) Map(angle,-90,90,100,255);
+
+
+			}else{
+
+
+				if( angle<90 && angle>-180){
+
+					Debug.Log ("droite");
+
+					com.m1_2= 0;
+					com.m1_1=(byte) Map(angle,-90,-180,100,255);
+					
+					com.m2_2=(byte) Map(angle,-90,-180,100,255);
+					com.m2_1=0;
+
+
+				}else{
+
+
+					//Debug.Log (angle);
+
+					
+					com.m1_2= (byte) Map(angle,90,180,100,255);
+					com.m1_1=0;
+					
+					com.m2_2=0;
+					com.m2_1=(byte) Map(angle,90,180,100,255);
+					
+
+				}
+
+
+			
+
+
+
+
+
+
+
+			}
+
+
+
+			
+		}else{
+			
+			
+			stopCar();
+			
+		}
+
+
 //	___________ Arduino Car AI
 
 
