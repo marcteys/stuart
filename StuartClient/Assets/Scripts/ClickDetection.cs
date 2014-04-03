@@ -65,6 +65,7 @@ public class ClickDetection : MonoBehaviour {
 	void CalculatePos(Vector3 pointPos) {
 
 		pointerVector = pointPos - car.transform.position;
+
 		Debug.Log(pointerVector);
 		string pointerString = pointerVector.ToString("G4").Replace("(","").Replace(")","");
 		Debug.DrawRay (pointerVector,Vector3.zero,Color.green);

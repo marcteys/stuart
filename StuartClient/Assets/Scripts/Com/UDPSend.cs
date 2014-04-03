@@ -1,106 +1,42 @@
-﻿/*
-
- 
-
-    -----------------------
-
-    UDP-Send
-
-    -----------------------
-
-    // [url]http://msdn.microsoft.com/de-de/library/bb979228.aspx#ID0E3BAC[/url]
-
-    
-
-    // > gesendetes unter 
-
-    // 127.0.0.1 : 8050 empfangen
-
-    
-
-    // nc -lu 127.0.0.1 8050
-
- 
-
-        // todo: shutdown thread at the end
-
-*/
-
-using UnityEngine;
-
+﻿using UnityEngine;
 using System.Collections;
 
-
-
 using System;
-
 using System.Text;
-
 using System.Net;
-
 using System.Net.Sockets;
-
 using System.Threading;
 
 
-
-public class UDPSend : MonoBehaviour
-	
-{
+public class UDPSend : MonoBehaviour {
 	
 	private static int localPort;
-	
-	
+
 	
 	// prefs 
-	
 	public string IP;  // define in init
-	
 	public int port;  // define in init
 	
 
 	// "connection" things
-	
 	IPEndPoint remoteEndPoint;
-	
 	UdpClient client;
 	
 
-	
 	//ben add
 
-
 	string strMessage="";
-	
 	float intervalTimer=0.0f; 
 	float interval=0.0f;
-	
-	
-	
+
 	// call it from shell (as program)
 	
-	public static void Main() 
-		
-	{
+	public static void Main()  {
 		
 		UDPSend sendObj=new UDPSend();
-		
 		sendObj.init();
-		
-		
-		
-		// testing via console
-		
-		// sendObj.inputFromConsole();
-		
-		
-		
-		// as server sending endless
-		
 		sendObj.sendEndless(" endless infos \n");
-		
-		
-		
+
 	}
 	
 	// start from unity3d
@@ -111,9 +47,7 @@ public class UDPSend : MonoBehaviour
 		
 	}
 	
-	public void Start()
-		
-	{
+	public void Start() {
 		
 		init(); 
 		//GameObject obj= GameObject.Find("ImageTargetStones");
@@ -126,51 +60,7 @@ public class UDPSend : MonoBehaviour
 	}
 	
 	
-	
-	// OnGUI
-	
-	void OnGUI()
-		
-	{
 
-		/*
-		
-		Rect rectObj=new Rect(40,380,200,400);
-		
-		GUIStyle style = new GUIStyle();
-		
-		style.alignment = TextAnchor.UpperLeft;
-		
-		GUI.Box(rectObj,"# UDPSend-Data\n127.0.0.1 "+port+" #\n"
-		        
-		        + "shell> nc -lu 127.0.0.1  "+port+" \n"
-		        
-		        ,style);
-		
-		
-		
-		// ------------------------
-		
-		// send it
-		
-		// ------------------------
-
-
-
-		strMessage=GUI.TextField(new Rect(40,420,140,20),strMessage);
-	
-		if (GUI.Button(new Rect(190,420,40,20),"send"))
-			
-		{
-			
-			sendString(strMessage+"\n");
-			
-		} 
-
-		*/
-		
-	}
-	
 	void RepeatingFunctionCar () {
 
 
@@ -194,7 +84,6 @@ public class UDPSend : MonoBehaviour
 
 	void RepeatingFunctionCube () {
 
-		//Debug.Log(Time.time);
 
 	// parcour tout les objet avec le tag actif 
 		string elems="";
@@ -203,15 +92,13 @@ public class UDPSend : MonoBehaviour
 		foreach(GameObject marker in GameObject.FindGameObjectsWithTag("cube")) {
 			nbobj++;
 
-
-
 			if(marker.renderer.enabled ){ // envoi data si rendu actif (detecter par vuforia)
 
 				string pos = marker.transform.position.ToString("G4").Replace("(","").Replace(")","");
 
 				string rot = marker.transform.eulerAngles.ToString("G4").Replace("(","").Replace(")","");
 			
-			int fiable=0;
+				int fiable=0;
 			
 			if( marker.transform.eulerAngles.x< 310 && marker.transform.eulerAngles.z< 310) fiable=1; // si marker de traviol = 0 
 
@@ -231,60 +118,36 @@ public class UDPSend : MonoBehaviour
 
 					elems+=elem;
 				}else if(nbobj>2){
-
-
 					elems+="|"+elem;
 				}
 
-			
-
 			}
 
-
-
-			//Instantiate(respawnPrefab, respawn.transform.position, respawn.transform.rotation) as GameObject;
-
-
 		}
-		
-		
+
 		sendString(elems+"\n");
-		//Debug.Log(elems);
 
 
-		
-	
 		//Will print initialDelay + repeatTime * repetitions
 	}
 
 	// init
 	
-	public void init()
-		
-	{
+	public void init() {
 		
 		// Endpunkt definieren, von dem die Nachrichten gesendet werden.
-		
 		print("UDPSend.init()");
 	
 		// ----------------------------
 		
 		// Senden
-		
 		// ----------------------------
-		
 		remoteEndPoint = new IPEndPoint(IPAddress.Parse(IP), port);
-		
 		client = new UdpClient();
-		
-		
-		
+
 		// status
-		
 		print("Sending to "+IP+" : "+port);
-		
 		print("Testing: nc -lu "+IP+" : "+port);
-		
 		
 		
 	}
@@ -293,133 +156,49 @@ public class UDPSend : MonoBehaviour
 	
 	// inputFromConsole
 	
-	public void inputFromConsole()
+	public void inputFromConsole() {
 		
-	{
-		
-		try 
-			
-		{
-			
+		try  {
 			string text;
-			
-			do 
-				
-			{
-				
+			do {
 				text = Console.ReadLine();
-				
-				
-				
-				// Den Text zum Remote-Client senden.
-				
-				if (text != "") 
-					
-				{
-					
-					
-					
-					// Daten mit der UTF8-Kodierung in das Binärformat kodieren.
-					
+				if (text != "") {
+
 					byte[] data = Encoding.UTF8.GetBytes(text);
-					
-					
-					
 					// Den Text zum Remote-Client senden.
-					
 					client.Send(data, data.Length, remoteEndPoint);
-					
 				}
-				
 			} while (text != "");
 			
-		}
-		
-		catch (Exception err)
-			
-		{
-			
+		} catch (Exception err) {
 			print(err.ToString());
-			
 		}
-		
-		
-		
 	}
-	
-	
-	
+
 	// sendData
 	
-	public void sendString(string message)
-		
-	{
-		
-		try 
-			
-		{
-			
-			//if (message != "") 
-			
-			//{
-			
-			
-			
-			// Daten mit der UTF8-Kodierung in das Binärformat kodieren.
-			
+	public void sendString(string message) {
+		try  {
 			byte[] data = Encoding.UTF8.GetBytes(message);
-			
-			
-			
-			// Den message zum Remote-Client senden.
-			
 			client.Send(data, data.Length, remoteEndPoint);
-			
-			//}
-			
-		}
-		
-		catch (Exception err)
-			
-		{
-			
+		} catch (Exception err) {
 			print(err.ToString());
-			
 		}
-		
 	}
 	
 	
 	
-	public void changeIP(string newIP) {
+public void changeIP(string newIP) {
 
 
+}
+
+	private void sendEndless(string testStr) {
+		do {
+			 sendString(testStr);
+		} while(true);
+
 	}
-	
-	// endless test
-	
-	private void sendEndless(string testStr)
-		
-	{
-		
-		do
-			
-		{
-			
-			sendString(testStr);
-			
-			
-			
-			
-			
-		}
-		
-		while(true);
-		
-		
-		
-	}
-	
-	
+
 	
 }
