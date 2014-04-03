@@ -23,6 +23,9 @@ public class UDPReceive : MonoBehaviour {
 	Vector3[] moy_voit_pos= new Vector3[1];
 	Vector3[] moy_voit_rot= new Vector3[1];
 
+
+	Vector3[] allPos = new Vector3[10]; // tableau des cams 
+	Quaternion[] allRot = new Quaternion[10]; // tableau des cams 
 	//
 	public bool pointerCheck=false;
 	 
@@ -159,8 +162,7 @@ public class UDPReceive : MonoBehaviour {
 					Cube tempo=get_Cube(int.Parse(infos[1]));
 					tempo.moy[int.Parse (idcam)-1]=sTov3(infos[3]);
 					tempo.pos=tempo.get_pos();
-					tempo.rot=sToQ(infos[4]);
-				}
+             	}
 			}
 		}
 	}
@@ -188,8 +190,23 @@ public class UDPReceive : MonoBehaviour {
 	// ------------------------------
 
 	void refreshCar(string idcam,string data){
+
 		string []  datas =data.Split(';');
-				
+
+
+		allPos[int.Parse(idcam)] = sTov3 (datas [1]);
+		allRot[int.Parse(idcam)] = sToQ (datas [2]);
+		if(debugMode) Debug.Log ("cam " +int.Parse(idcam)+ " valeurs " + sTov3 (datas [1]));
+
+
+
+	///////////////////////////	pos = sTov3 (datas [1]);
+
+		// pos = Vector3.Lerp (car.transform.position,sTov3(datas [1]),Time.deltaTime *10);
+	//////////////////////////////	rot = sToQ(datas[2]);
+
+		/*
+
 		moy_voit_pos[int.Parse(idcam)-1]=sTov3(datas[1]);
 
 	//	moy_voit_rot[int.Parse(idcam)-1]=sTov3(datas[2]);
@@ -220,6 +237,8 @@ public class UDPReceive : MonoBehaviour {
 			//pos=sTov3(datas[1]);
 			//rot=sTov3(datas[2]);
 		//}
+
+*/
 	}
 
 	Vector3 sTov3(string text){
@@ -236,11 +255,27 @@ public class UDPReceive : MonoBehaviour {
 	void Update () {
 		//Update Cible
 	
-		//Update Car
-	     car.transform.position = pos;
 
-		//Debug.Log (rot);
-		car.transform.rotation = rot;
+
+
+		//Update Car
+		float min = 9999;
+		int idMin = 0;
+		for (int i = 0; i < allPos.Length; i++) {
+			if(allPos[i] != null ) {
+				float distance = Vector3.Distance (car.transform.position, allPos[i]);
+				if(distance < min && distance != 0) {
+					min = distance;
+					idMin = i ;
+				}
+			}
+		}
+
+		car.transform.position = allPos [idMin];
+		car.transform.rotation = allRot [idMin];
+
+		//vider le tableau
+		// System.Array.Clear (allPos,0,allPos.Length);
 
 		//lock car 
 		car.transform.eulerAngles=new Vector3(0,car.transform.eulerAngles.y,0);
