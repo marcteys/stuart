@@ -44,16 +44,12 @@ public class AstarAI_light : MonoBehaviour {
 	private GameObject car;
 	private GameObject cible;
 
-
-	public bool debugMode = false;
-
-
 	public void Start () {
 		//Get a reference to the Seeker component we added earlier
 		seeker = GetComponent<Seeker>();
 
 		com = gameObject.GetComponent<Com>();
-		receive = GameObject.Find("Camera").GetComponent<UDPReceive>();
+		receive = gameObject.GetComponent<UDPReceive>();
 		car= GameObject.Find("Car");
 		cible= GameObject.Find("cible");
 		//Start a new path to the targetPosition, return the result to the OnPathComplete function
@@ -143,14 +139,6 @@ public class AstarAI_light : MonoBehaviour {
 
 
 
-
-
-
-
-
-
-
-
 public void Update () {// Start Update
 		
 //	___________ Pas touche Astar
@@ -192,7 +180,7 @@ public void Update () {// Start Update
 
 //	___________ Application force cube
 
-		foreach (GameObject cube in GameObject.FindGameObjectsWithTag("Cube")) {    
+	/*	foreach (GameObject cube in GameObject.FindGameObjectsWithTag("Cube")) {    
 				
 		
 			float dist_cube=Vector3.Distance(transform.position,cube.transform.position );
@@ -201,14 +189,18 @@ public void Update () {// Start Update
 			field=field.normalized/(dist_cube/2);
 			int nameCube= int.Parse(cube.gameObject.name.Split('_')[1]);
 
-			if(debugMode) Debug.Log (receive);
-
-			
+		
+    
+	int id= (int) nameCube[1];
 			float forceField=receive.get_Cube(nameCube).force;
 			dir=dir+(field*forceField);
 			Debug.DrawRay(transform.position,field*2,Color.yellow);
+			Debug.Log( dist_cube); 
+
+
 		
-		}
+		
+		}*/
 	
 //	___________ Application force cube
 
@@ -229,27 +221,20 @@ float dist=Vector3.Distance(car.transform.position,cible.transform.position);
 
 		if(dist>1){
 		
-
-
-
-
-
 			if(angle>-10 && angle<10 ){
 
 				com.m1_1=100;
 				com.m2_1=100;
 
 
-			}else if(angle>1){
+			}else if(angle>10){
 
 				com.m1_1=0;
 				com.m2_1=100;
 
 
 
-			}else if(angle<0){
-
-
+			}else if(angle<-10){
 
 				com.m2_1=0;
 				com.m1_1=100;
@@ -257,9 +242,7 @@ float dist=Vector3.Distance(car.transform.position,cible.transform.position);
 			}
 
 
-
-
-		}else{
+		 }else{
 
 
 			stopCar();
