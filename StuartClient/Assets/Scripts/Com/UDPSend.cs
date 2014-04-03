@@ -9,7 +9,8 @@ using System.Threading;
 
 
 public class UDPSend : MonoBehaviour {
-	
+
+
 	private static int localPort;
 
 	
@@ -28,6 +29,7 @@ public class UDPSend : MonoBehaviour {
 	string strMessage="";
 	float intervalTimer=0.0f; 
 	float interval=0.0f;
+	public bool debugMode = false;
 
 	// call it from shell (as program)
 	
@@ -61,77 +63,9 @@ public class UDPSend : MonoBehaviour {
 	
 	
 
-	void RepeatingFunctionCar () {
-
-
-		GameObject car =GameObject.FindGameObjectWithTag("car");
-
-		if( car.renderer.enabled ){
-			int fiable=0;
-			string pos = car.transform.position.ToString("G4").Replace("(","").Replace(")","");
-			string rot = car.transform.eulerAngles.ToString("G4").Replace("(","").Replace(")","");
-			if( car.transform.eulerAngles.x< 310 && car.transform.eulerAngles.z< 310) fiable=1; 
-
-			string elem= "Car/Cam1/"+fiable+";"+pos+";"+rot;
-			sendString(elem+"\n");
-
-		}
-
-
-	}
 
 
 
-	void RepeatingFunctionCube () {
-
-
-	// parcour tout les objet avec le tag actif 
-		string elems="";
-		int nbobj=0;
-		int toto =GameObject.FindGameObjectsWithTag("cube").Length;
-		foreach(GameObject marker in GameObject.FindGameObjectsWithTag("cube")) {
-			nbobj++;
-
-			if(marker.renderer.enabled ){ // envoi data si rendu actif (detecter par vuforia)
-
-				string pos = marker.transform.position.ToString("G4").Replace("(","").Replace(")","");
-
-				string rot = marker.transform.eulerAngles.ToString("G4").Replace("(","").Replace(")","");
-			
-				int fiable=0;
-			
-			if( marker.transform.eulerAngles.x< 310 && marker.transform.eulerAngles.z< 310) fiable=1; // si marker de traviol = 0 
-
-				string[] infos = marker.name.Split('_');
-
-				string elem= infos[0]+";"+infos[1]+";"+fiable+";"+pos+";"+rot;
-
-				if(toto==1){
-
-					elems="Cube/Cam1/"+elem;
-
-				}else if(nbobj==1 && toto>1 ){
-
-					elems="Cube/Cam1/"+elem+"|";
-				
-				}else if(nbobj==2){
-
-					elems+=elem;
-				}else if(nbobj>2){
-					elems+="|"+elem;
-				}
-
-			}
-
-		}
-
-		sendString(elems+"\n");
-
-
-		//Will print initialDelay + repeatTime * repetitions
-	}
-
-	// init
 	
 	public void init() {
 		
@@ -178,7 +112,7 @@ public class UDPSend : MonoBehaviour {
 	// sendData
 	
 	public void sendString(string message) {
-		Debug.Log (message);
+		if(debugMode) Debug.Log (message);
 		try  {
 			byte[] data = Encoding.UTF8.GetBytes(message);
 			client.Send(data, data.Length, remoteEndPoint);
