@@ -309,8 +309,14 @@ public class UDPReceive : MonoBehaviour {
 		}
 
 		if(pointerCheck){
-			cible.transform.position=car.transform.position-relative;
+// 
+
+			relative= car.transform.rotation*relative;
+			cible.transform.position=car.transform.position+relative;
+
+
 			pointerCheck=false;
+
 		}
 
 	}

@@ -16,6 +16,10 @@ public class Com : MonoBehaviour {
 	SerialPort sp = new SerialPort("COM6", 9600);
 	// Use this for initialization
 
+
+	float lastTime=0;
+
+
 	void Awake() {
 
 		foreach(string str in SerialPort.GetPortNames())
@@ -35,17 +39,10 @@ public class Com : MonoBehaviour {
 
 
 		sp.Open();
-		InvokeRepeating("RepeatingSend", 0.001f, 0.1f);
+		//InvokeRepeating("RepeatingSend", 0.001f, 0.1f);
 	}
 
-	void RepeatingSend () {
 
-
-		SendToSerial((byte) m1_1,(byte) m1_2,(byte) m2_1,(byte) m2_2);
-		//Debug.Log ((byte) 252);
-
-	}
-	
 	// Update is called once per frame
 	void Update () {
 
@@ -54,7 +51,11 @@ public class Com : MonoBehaviour {
 		//SendToSerial((byte) 255,(byte) 255, (byte) 255);
 
 
-
+		if (Time.time > lastTime + 0.10f) {
+				
+			lastTime=Time.time;
+			SendToSerial( m1_1, m1_2, m2_1, m2_2);
+		}
 
 		
 	}
