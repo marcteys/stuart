@@ -178,6 +178,7 @@ public class UDPSend : MonoBehaviour {
 	// sendData
 	
 	public void sendString(string message) {
+		Debug.Log (message);
 		try  {
 			byte[] data = Encoding.UTF8.GetBytes(message);
 			client.Send(data, data.Length, remoteEndPoint);
