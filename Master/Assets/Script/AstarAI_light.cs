@@ -19,7 +19,7 @@ public class AstarAI_light : MonoBehaviour {
 	public bool canSearch = true;
 	public bool canMove = true;
 
-
+	public float coefForceField=1;
 	protected float lastPathSearch = -9999;
 
 	protected Seeker seeker;
@@ -52,7 +52,7 @@ public class AstarAI_light : MonoBehaviour {
 		seeker = GetComponent<Seeker>();
 
 		com = gameObject.GetComponent<Com>();
-		receive = gameObject.GetComponent<UDPReceive>();
+		receive = GameObject.Find("Camera").GetComponent<UDPReceive>();
 		car= GameObject.Find("Car");
 		cible= GameObject.Find("cible");
 		//Start a new path to the targetPosition, return the result to the OnPathComplete function
@@ -183,27 +183,31 @@ public void Update () {// Start Update
 
 //	___________ Application force cube
 
-	/*	foreach (GameObject cube in GameObject.FindGameObjectsWithTag("Cube")) {    
+		foreach (GameObject cube in GameObject.FindGameObjectsWithTag("Cube")) {    
 				
+		
 		
 			float dist_cube=Vector3.Distance(transform.position,cube.transform.position );
 
 			Vector3 field = cube.transform.position-transform.position;
-			field=field.normalized/(dist_cube/2);
+			field=field.normalized/(dist_cube);
 			int nameCube= int.Parse(cube.gameObject.name.Split('_')[1]);
 
 		
     
-	int id= (int) nameCube[1];
+	      //  int id= (int) nameCube[1];
 			float forceField=receive.get_Cube(nameCube).force;
-			dir=dir+(field*forceField);
-			Debug.DrawRay(transform.position,field*2,Color.yellow);
-			Debug.Log( dist_cube); 
+
+
+		    dir=dir+(field*(forceField*-coefForceField));
+
+			Debug.DrawRay(transform.position,field*(5*forceField*-coefForceField),Color.yellow);
+//			Debug.Log( dist_cube); 
 
 
 		
 		
-		}*/
+		}
 	
 //	___________ Application force cube
 
@@ -222,7 +226,7 @@ float dist=Vector3.Distance(car.transform.position,cible.transform.position);
 
 //	___________ Arduino Car AI
 
-		/*
+	/*
 
 		if(dist>1){
 		
@@ -253,8 +257,10 @@ float dist=Vector3.Distance(car.transform.position,cible.transform.position);
 			stopCar();
 
 		}
-
 */
+
+
+	
 
 		if(dist>1 && !emergencyStop){
 
@@ -274,7 +280,7 @@ float dist=Vector3.Distance(car.transform.position,cible.transform.position);
 
 				if( angle<50 && angle>-180){
 
-					Debug.Log ("droite");
+				
 
 					com.m1_2= 0;
 					com.m1_1=(byte) Map(angle,-50,-180,100,255);
@@ -318,6 +324,10 @@ float dist=Vector3.Distance(car.transform.position,cible.transform.position);
 			stopCar();
 			
 		}
+
+
+
+
 
 
 //	___________ Arduino Car AI

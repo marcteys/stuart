@@ -145,6 +145,9 @@ public class UDPReceive : MonoBehaviour {
 	void refreshCubeForce(string data){
 		string []  datas =data.Split('/');
 		get_Cube(int.Parse(datas[0])).force = float.Parse(datas[1]);
+
+	
+
 	}
 
 	//REFRESH POINTER DATA
@@ -334,6 +337,7 @@ public class UDPReceive : MonoBehaviour {
 	}
 
 	void OnDisable() { 
+		Debug.Log ("stop udp");
 		if ( receiveThread!= null) 
 			receiveThread.Abort(); 
 		client.Close(); 
