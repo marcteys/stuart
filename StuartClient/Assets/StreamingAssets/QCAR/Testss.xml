@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
+  <Tracking>
+    <ImageTarget name="markk2" size="1.000000 1.000000" />
+    <ImageTarget name="bleu" size="1.000000 1.000000" />
+    <ImageTarget name="scifi" size="1.000000 1.000000" />
+    <ImageTarget name="raye" size="1.000000 1.000000" />
+    <ImageTarget name="zebre" size="1.000000 1.000000" />
+    <ImageTarget name="contraste" size="1.000000 1.000000" />
+    <ImageTarget name="cailloux" size="1.000000 1.000000" />
+    <ImageTarget name="mark" size="1.000000 1.000000" />
+    <ImageTarget name="react" size="1.000000 1.000000" />
+    <ImageTarget name="benoit" size="1.000000 1.000000" />
+    <ImageTarget name="greg" size="1.000000 1.000000" />
+  </Tracking>
+</QCARConfig>

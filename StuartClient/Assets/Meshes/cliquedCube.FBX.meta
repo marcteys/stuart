@@ -1,0 +1,481 @@
+fileFormatVersion: 2
+guid: f7bb3cb8d71e7194e971b4e236c5d47d
+ModelImporter:
+  serializedVersion: 15
+  fileIDToRecycleName:
+    100000: Box001
+    100002: Box002
+    100004: Box003
+    100006: Box004
+    100008: Box005
+    100010: Box006
+    100012: Box007
+    100014: Box008
+    100016: Box010
+    100018: Box035
+    100020: Box036
+    100022: Box037
+    100024: Box038
+    100026: Box039
+    100028: Box040
+    100030: Box041
+    100032: Box042
+    100034: Box043
+    100036: Box044
+    100038: Box045
+    100040: Box046
+    100042: Box047
+    100044: Box048
+    100046: Box049
+    100048: Box050
+    100050: Box051
+    100052: Box052
+    100054: Box053
+    100056: Box054
+    100058: Box055
+    100060: Box056
+    100062: Box057
+    100064: Box058
+    100066: Box059
+    100068: //RootNode
+    100070: face002
+    100072: face003
+    100074: face004
+    100076: face01
+    100078: Rectangle005
+    100080: Rectangle006
+    100082: Rectangle007
+    100084: Rectangle008
+    100086: Rectangle009
+    100088: Rectangle010
+    100090: Rectangle011
+    100092: Rectangle012
+    100094: Rectangle013
+    100096: Rectangle014
+    100098: Rectangle015
+    100100: Rectangle016
+    100102: Rectangle017
+    100104: Rectangle018
+    100106: Rectangle019
+    100108: Rectangle020
+    100110: Rectangle021
+    100112: Rectangle022
+    100114: Rectangle023
+    100116: Rectangle024
+    400000: Box001
+    400002: Box002
+    400004: Box003
+    400006: Box004
+    400008: Box005
+    400010: Box006
+    400012: Box007
+    400014: Box008
+    400016: Box010
+    400018: Box035
+    400020: Box036
+    400022: Box037
+    400024: Box038
+    400026: Box039
+    400028: Box040
+    400030: Box041
+    400032: Box042
+    400034: Box043
+    400036: Box044
+    400038: Box045
+    400040: Box046
+    400042: Box047
+    400044: Box048
+    400046: Box049
+    400048: Box050
+    400050: Box051
+    400052: Box052
+    400054: Box053
+    400056: Box054
+    400058: Box055
+    400060: Box056
+    400062: Box057
+    400064: Box058
+    400066: Box059
+    400068: //RootNode
+    400070: face002
+    400072: face003
+    400074: face004
+    400076: face01
+    400078: Rectangle005
+    400080: Rectangle006
+    400082: Rectangle007
+    400084: Rectangle008
+    400086: Rectangle009
+    400088: Rectangle010
+    400090: Rectangle011
+    400092: Rectangle012
+    400094: Rectangle013
+    400096: Rectangle014
+    400098: Rectangle015
+    400100: Rectangle016
+    400102: Rectangle017
+    400104: Rectangle018
+    400106: Rectangle019
+    400108: Rectangle020
+    400110: Rectangle021
+    400112: Rectangle022
+    400114: Rectangle023
+    400116: Rectangle024
+    2300000: Box001
+    2300002: Box003
+    2300004: Box004
+    2300006: Box005
+    2300008: Box006
+    2300010: Box007
+    2300012: Box008
+    2300014: Box010
+    2300016: Box035
+    2300018: Box036
+    2300020: Box037
+    2300022: Box038
+    2300024: Box039
+    2300026: Box040
+    2300028: Box041
+    2300030: Box042
+    2300032: Box043
+    2300034: Box044
+    2300036: Box045
+    2300038: Box046
+    2300040: Box047
+    2300042: Box048
+    2300044: Box049
+    2300046: Box050
+    2300048: Box051
+    2300050: Box052
+    2300052: Box053
+    2300054: Box054
+    2300056: Box055
+    2300058: Box056
+    2300060: Box057
+    2300062: Box058
+    2300064: Box059
+    2300066: Rectangle005
+    2300068: Rectangle006
+    2300070: Rectangle007
+    2300072: Rectangle008
+    2300074: Rectangle009
+    2300076: Rectangle010
+    2300078: Rectangle011
+    2300080: Rectangle012
+    2300082: Rectangle013
+    2300084: Rectangle014
+    2300086: Rectangle015
+    2300088: Rectangle016
+    2300090: Rectangle017
+    2300092: Rectangle018
+    2300094: Rectangle019
+    2300096: Rectangle020
+    2300098: Rectangle021
+    2300100: Rectangle022
+    2300102: Rectangle023
+    2300104: Rectangle024
+    3300000: Box001
+    3300002: Box003
+    3300004: Box004
+    3300006: Box005
+    3300008: Box006
+    3300010: Box007
+    3300012: Box008
+    3300014: Box010
+    3300016: Box035
+    3300018: Box036
+    3300020: Box037
+    3300022: Box038
+    3300024: Box039
+    3300026: Box040
+    3300028: Box041
+    3300030: Box042
+    3300032: Box043
+    3300034: Box044
+    3300036: Box045
+    3300038: Box046
+    3300040: Box047
+    3300042: Box048
+    3300044: Box049
+    3300046: Box050
+    3300048: Box051
+    3300050: Box052
+    3300052: Box053
+    3300054: Box054
+    3300056: Box055
+    3300058: Box056
+    3300060: Box057
+    3300062: Box058
+    3300064: Box059
+    3300066: Rectangle005
+    3300068: Rectangle006
+    3300070: Rectangle007
+    3300072: Rectangle008
+    3300074: Rectangle009
+    3300076: Rectangle010
+    3300078: Rectangle011
+    3300080: Rectangle012
+    3300082: Rectangle013
+    3300084: Rectangle014
+    3300086: Rectangle015
+    3300088: Rectangle016
+    3300090: Rectangle017
+    3300092: Rectangle018
+    3300094: Rectangle019
+    3300096: Rectangle020
+    3300098: Rectangle021
+    3300100: Rectangle022
+    3300102: Rectangle023
+    3300104: Rectangle024
+    4300000: Box001
+    4300002: Box003
+    4300004: Box004
+    4300006: Rectangle008
+    4300008: Rectangle007
+    4300010: Box007
+    4300012: Box008
+    4300014: Box010
+    4300016: Rectangle005
+    4300018: Rectangle006
+    4300020: Box035
+    4300022: Rectangle009
+    4300024: Box005
+    4300026: Box006
+    4300028: Box043
+    4300030: Box042
+    4300032: Rectangle014
+    4300034: Box041
+    4300036: Rectangle013
+    4300038: Rectangle012
+    4300040: Box040
+    4300042: Box039
+    4300044: Rectangle011
+    4300046: Rectangle010
+    4300048: Box038
+    4300050: Box037
+    4300052: Box036
+    4300054: Box044
+    4300056: Box045
+    4300058: Box046
+    4300060: Box047
+    4300062: Rectangle015
+    4300064: Box048
+    4300066: Box049
+    4300068: Box050
+    4300070: Rectangle017
+    4300072: Rectangle018
+    4300074: Box057
+    4300076: Rectangle019
+    4300078: Rectangle020
+    4300080: Box051
+    4300082: Box052
+    4300084: Box053
+    4300086: Box054
+    4300088: Rectangle016
+    4300090: Box055
+    4300092: Box056
+    4300094: Box058
+    4300096: Rectangle021
+    4300098: Rectangle022
+    4300100: Rectangle023
+    4300102: Box059
+    4300104: Rectangle024
+    7400000: Click
+    9500000: //RootNode
+    11100000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 1
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Click
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 34
+      wrapMode: 1
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Box001
+        weight: 1
+      - path: Box002
+        weight: 1
+      - path: face01
+        weight: 1
+      - path: face01/Box003
+        weight: 1
+      - path: face01/Box004
+        weight: 1
+      - path: face01/Box005
+        weight: 1
+      - path: face01/Box006
+        weight: 1
+      - path: face01/Box007
+        weight: 1
+      - path: face01/Box008
+        weight: 1
+      - path: face01/Box010
+        weight: 1
+      - path: face01/Box035
+        weight: 1
+      - path: face01/Rectangle005
+        weight: 1
+      - path: face01/Rectangle006
+        weight: 1
+      - path: face01/Rectangle007
+        weight: 1
+      - path: face01/Rectangle008
+        weight: 1
+      - path: face01/Rectangle009
+        weight: 1
+      - path: face002
+        weight: 1
+      - path: face002/Box036
+        weight: 1
+      - path: face002/Box037
+        weight: 1
+      - path: face002/Box038
+        weight: 1
+      - path: face002/Box039
+        weight: 1
+      - path: face002/Box040
+        weight: 1
+      - path: face002/Box041
+        weight: 1
+      - path: face002/Box042
+        weight: 1
+      - path: face002/Box043
+        weight: 1
+      - path: face002/Rectangle010
+        weight: 1
+      - path: face002/Rectangle011
+        weight: 1
+      - path: face002/Rectangle012
+        weight: 1
+      - path: face002/Rectangle013
+        weight: 1
+      - path: face002/Rectangle014
+        weight: 1
+      - path: face003
+        weight: 1
+      - path: face003/Box044
+        weight: 1
+      - path: face003/Box045
+        weight: 1
+      - path: face003/Box046
+        weight: 1
+      - path: face003/Box047
+        weight: 1
+      - path: face003/Box048
+        weight: 1
+      - path: face003/Box049
+        weight: 1
+      - path: face003/Box050
+        weight: 1
+      - path: face003/Box057
+        weight: 1
+      - path: face003/Rectangle015
+        weight: 1
+      - path: face003/Rectangle017
+        weight: 1
+      - path: face003/Rectangle018
+        weight: 1
+      - path: face003/Rectangle019
+        weight: 1
+      - path: face003/Rectangle020
+        weight: 1
+      - path: face004
+        weight: 1
+      - path: face004/Box051
+        weight: 1
+      - path: face004/Box052
+        weight: 1
+      - path: face004/Box053
+        weight: 1
+      - path: face004/Box054
+        weight: 1
+      - path: face004/Box055
+        weight: 1
+      - path: face004/Box056
+        weight: 1
+      - path: face004/Box058
+        weight: 1
+      - path: face004/Box059
+        weight: 1
+      - path: face004/Rectangle016
+        weight: 1
+      - path: face004/Rectangle021
+        weight: 1
+      - path: face004/Rectangle022
+        weight: 1
+      - path: face004/Rectangle023
+        weight: 1
+      - path: face004/Rectangle024
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00999999978
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  userData: 
