@@ -178,6 +178,10 @@ public class UDPReceive : MonoBehaviour {
 		}
 	}
 
+
+
+
+
 	//check id 
 	bool check_idCubes(int id){
 		bool a = false;
