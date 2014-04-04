@@ -1,48 +1,11 @@
-﻿/*
-
- 
-
-    -----------------------
-
-    UDP-Send
-
-    -----------------------
-
-    // [url]http://msdn.microsoft.com/de-de/library/bb979228.aspx#ID0E3BAC[/url]
-
-    
-
-    // > gesendetes unter 
-
-    // 127.0.0.1 : 8050 empfangen
-
-    
-
-    // nc -lu 127.0.0.1 8050
-
- 
-
-        // todo: shutdown thread at the end
-
-*/
-
-using UnityEngine;
-
+﻿using UnityEngine;
 using System.Collections;
 
-
-
 using System;
-
 using System.Text;
-
 using System.Net;
-
 using System.Net.Sockets;
-
 using System.Threading;
-
-
 
 public class UDPSend : MonoBehaviour {
 	
@@ -77,14 +40,12 @@ public class UDPSend : MonoBehaviour {
 
 		// as server sending endless
 		sendObj.sendEndless(" endless infos \n");
-
 	}
 	
 	// start from unity3d
 
 	public void ChangeIP(){
 
-		
 	}
 	
 	public void Start() {
@@ -99,7 +60,6 @@ public class UDPSend : MonoBehaviour {
 	
 
 	public void refreshVector(){
-
 		Vector3 cibletempo = new Vector3 (cible.transform.localPosition.x, 0, cible.transform.localPosition.z);
 		Vector3 cartempo = new Vector3 (car.transform.localPosition.x, 0, car.transform.localPosition.z);
 		Vector3 vecteurCible = cibletempo-cartempo;
@@ -128,7 +88,6 @@ public class UDPSend : MonoBehaviour {
 		print("Sending to "+IP+" : "+port);
 		print("Testing: nc -lu "+IP+" : "+port);
 
-		
 	}
 
 	
@@ -149,7 +108,7 @@ public class UDPSend : MonoBehaviour {
 		
 	}
 
-	
+
 	// endless test
 	
 	private void sendEndless(string testStr) {
