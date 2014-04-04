@@ -38,6 +38,21 @@ public class UDPReceive : MonoBehaviour {
 
 	public Vector3 newPos;
 
+
+
+
+
+
+
+
+	//stuff to change cubes color
+
+	private Color colorOrange = new Color(1,103.Remap(0f, 255f, 0f, 1f),0);
+	private Color colorBlue = new Color(0,115.Remap(0f, 255f, 0f, 1f),1);
+
+	public float multiplicateurForce = 100f;
+
+
 	private static void Main() {
 		
 		UDPReceive receiveObj=new UDPReceive();
@@ -119,6 +134,9 @@ public class UDPReceive : MonoBehaviour {
 				if(datas[0] == "Pointer") {
 					newPos = sTov3(datas[1]);
 					if(debugMode) Debug.Log("New pos ! : " + newPos);
+				}else if(datas[0] == "CubeForce") {
+					ApplyCubeForce(datas[1],datas[2]);
+					if(debugMode) Debug.Log("New pos ! : " + newPos);
 				}
 
 
@@ -141,7 +159,51 @@ public class UDPReceive : MonoBehaviour {
 		}
 	}
 	
+	void ApplyCubeForce(string cubeName, string force) {
 
+		int newForce = int.Parse (force);
+		Transform cubeChange = GameObject.Find (cubeName).transform;
+
+		ParticleSystem waveOrange = cubeChange.transform.Find ("WaveOrange").gameObject.GetComponent<ParticleSystem>();
+		ParticleSystem waveBlue = cubeChange.transform.Find ("WaveBlue").gameObject.GetComponent<ParticleSystem>();
+		GameObject deg = GameObject.Find (cubeChange.transform.name+"/deg");
+
+		if(newForce > 0.5f) { // REPULTION 
+
+			float textbas = (float)Math.Round((double)multiplicateurForce*newForce.Remap(0.5f, 1f, 0f, 1f),2);
+
+			
+		
+			waveBlue.startSize = 0;
+			waveOrange.startSize = textbas/60;
+			
+			Color colorDeg = colorOrange;
+			colorDeg.a = textbas/multiplicateurForce - 0.3f;
+			
+			deg.renderer.material.SetColor("_TintColor",colorDeg);
+			
+		} else if(newForce < 0.5f) { // ATRACTION
+
+			float textbas = (float)Math.Round((double)multiplicateurForce*newForce.Remap(0f, 0.5f, 1f, 0f),2);
+
+			//total force
+			waveOrange.startSize = 0;
+			waveBlue.startSize = textbas/60;
+			
+			Color colorDeg = colorBlue;
+			colorDeg.a = textbas/multiplicateurForce - 0.3f;
+			
+			deg.renderer.material.SetColor("_TintColor",colorDeg);
+			
+			
+		} else {
+			waveOrange.startSize = 0;
+			waveBlue.startSize = 0;
+		}
+
+
+
+	}
 
 	Vector3 sTov3(string text){
 		
