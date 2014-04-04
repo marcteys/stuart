@@ -41,7 +41,6 @@ public class ClickDetection : MonoBehaviour {
 			PlacePoint();
 		}	
 		Debug.DrawRay (Vector3.zero,pointerVector,Color.green);
-		Debug.Log (pointerVector);
 	}
 
 
@@ -51,7 +50,6 @@ public class ClickDetection : MonoBehaviour {
 		if (Physics.Raycast(ray, out hit, limit)) {
 
 			if(hit.transform.CompareTag( tagGround )){
-				Debug.Log(hit.point);
 				if(debugMode){
 					if(tmpSelect) Destroy (tmpSelect);
 					tmpSelect = Instantiate(dotPrefab, hit.point, Quaternion.identity) as GameObject;
