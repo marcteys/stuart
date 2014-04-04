@@ -6,25 +6,6 @@ Obj/
 UnityGenerated/
 Library/
  
-
-Master/Temp/
-Master/Obj/
-Master/UnityGenerated/
-Master/Library/
-
-
-
-Slave/Temp/
-Slave/Obj/
-Slave/UnityGenerated/
-Slave/Library/
-
-StuartClient/Temp/
-StuartClient/Obj/
-StuartClient/UnityGenerated/
-StuartClient/Library/
-
-
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
 # ===================================== #
@@ -38,8 +19,7 @@ ExportedObj/
 *.user
 *.unityproj
 *.booproj
-*.meta 
-
+ 
 # ============ #
 # OS generated #
 # ============ #
