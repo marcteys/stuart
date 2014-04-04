@@ -130,7 +130,7 @@ public class UDPReceive : MonoBehaviour {
 
 				}else if(strs[0]=="CubeForce"){
 					refreshCubeForce(strs[1]+"/"+strs[2]);
-					UDPSendScript.SendMessage("c_"+strs[1]+"/"+strs[2]);
+					UDPSendScript.SendMessage("CubeForce/c_"+strs[1]+"/"+strs[2]);
 
 					Debug.Log (strs[2]);
 				}else if(strs[0]=="emergency"){
