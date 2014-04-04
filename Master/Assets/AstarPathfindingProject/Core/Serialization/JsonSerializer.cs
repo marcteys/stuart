@@ -725,7 +725,15 @@ for every node {
 					string entryText = GetString (entry);
 					
 					JsonReader reader = new JsonReader(entryText,readerSettings);
-					reader.PopulateObject (ref graphEditors[i]);
+
+
+					//fix the problem form source : http://arongranberg.com/vanillaforums/discussion/1078/arraytypemismatchexception-on-install
+					//reader.PopulateObject (ref graphEditors[i]);
+					GraphEditorBase graphEditor = graphEditors[i];
+					reader.PopulateObject (ref graphEditor);
+					graphEditors[i] = graphEditor;
+					// end fix
+
 					break;
 				}
 			}
