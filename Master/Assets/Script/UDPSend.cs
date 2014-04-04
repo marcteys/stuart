@@ -66,7 +66,6 @@ public class UDPSend : MonoBehaviour {
 	float intervalTimer=0.0f; 
 	float interval=0.0f;
 
-	
 	// call it from shell (as program)
 	
 	public static void Main() {

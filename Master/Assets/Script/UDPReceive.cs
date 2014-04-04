@@ -130,7 +130,7 @@ public class UDPReceive : MonoBehaviour {
 
 				}else if(strs[0]=="CubeForce"){
 					refreshCubeForce(strs[1]+"/"+strs[2]);
-					UDPSendScript.SendMessage("CubeForce/c_"+strs[1]+"/"+strs[2]);
+					UDPSendScript.sendString("CubeForce/c_"+strs[1]+"/"+strs[2]);
 
 					Debug.Log (strs[2]);
 				}else if(strs[0]=="emergency"){
@@ -141,7 +141,7 @@ public class UDPReceive : MonoBehaviour {
 			}
 			
 			catch (Exception err) {
-				print(err.ToString());
+					print(err.ToString());
 			}
 		}
 	}
@@ -150,9 +150,6 @@ public class UDPReceive : MonoBehaviour {
 	void refreshCubeForce(string data){
 		string []  datas =data.Split('/');
 		get_Cube(int.Parse(datas[0])).force = float.Parse(datas[1]);
-
-	
-
 	}
 
 	//REFRESH POINTER DATA
