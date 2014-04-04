@@ -26,6 +26,9 @@ public class CubeRecievedForce : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+
+
 		if(force > 0.5f) { // REPULTION 
 			
 			float textbas = (float)Math.Round((double)multiplicateurForce*force.Remap(0.5f, 1f, 0f, 1f),2);
@@ -59,4 +62,5 @@ public class CubeRecievedForce : MonoBehaviour {
 			waveBlue.startSize = 0;
 		}
 	}
+
 }

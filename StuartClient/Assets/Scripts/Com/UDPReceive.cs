@@ -43,6 +43,7 @@ public class UDPReceive : MonoBehaviour {
 
 
 	public GameObject[] allCubes;
+	public string[] allCubesName;
 	public CubeRecievedForce[] allCubesScripts;
 
 
@@ -78,6 +79,7 @@ public class UDPReceive : MonoBehaviour {
 
 		for (int i = 0; i< allCubes.Length; i++) {
 			allCubesScripts[i] = allCubes[i].GetComponent<CubeRecievedForce>();
+			allCubesName[i] = allCubes[i].name;
 		}
 
 		init(); 
@@ -166,15 +168,16 @@ public class UDPReceive : MonoBehaviour {
 			}
 		}
 	}
-	
+
+
 	void ApplyCubeForce(string cubeName, string force) {
 
-		int newForce = int.Parse (force);
+		float newForce = Map(float.Parse (force),-1,1,0,1);
 
 		for (int i = 0; i < allCubes.Length; i++) {
-			if(allCubes[i].name == cubeName) {
+			if(allCubesName[i] == cubeName) {
 				allCubesScripts[i].force = newForce;
-				Debug.Log("Edit cube " + allCubes[i].name);
+				Debug.Log("Edit cube " + allCubesName[i]);
 				return;
 			}
 		}
@@ -182,6 +185,12 @@ public class UDPReceive : MonoBehaviour {
 
 
 	}
+	
+	
+	float Map(this float value,  float low1,  float high1,  float low2,  float high2){
+		return low2 + (value - low1) * (high2 - low2) / (high1 - low1);
+	}
+
 
 	Vector3 sTov3(string text){
 		
