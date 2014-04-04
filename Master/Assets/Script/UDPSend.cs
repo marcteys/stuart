@@ -94,7 +94,7 @@ public class UDPSend : MonoBehaviour {
 		cible=GameObject.Find("cible");
 		car=GameObject.Find("Car");
 
-		InvokeRepeating("refreshVector",1,0.1f);
+		InvokeRepeating("refreshVector",1,0.05f);
 	
 	}
 	

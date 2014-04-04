@@ -190,7 +190,7 @@ public void Update () {// Start Update
 			float dist_cube=Vector3.Distance(transform.position,cube.transform.position );
 
 			Vector3 field = cube.transform.position-transform.position;
-			field=field.normalized/(dist_cube);
+			field=field.normalized/(dist_cube*4f);
 			int nameCube= int.Parse(cube.gameObject.name.Split('_')[1]);
 
 		
@@ -201,7 +201,7 @@ public void Update () {// Start Update
 
 		    dir=dir+(field*(forceField*-coefForceField));
 
-			Debug.DrawRay(transform.position,field*(5*forceField*-coefForceField),Color.yellow);
+			Debug.DrawRay(transform.position,field*(forceField*-coefForceField),Color.yellow);
 //			Debug.Log( dist_cube); 
 
 
@@ -215,6 +215,8 @@ public void Update () {// Start Update
 //	___________ Angle direction
 		Debug.DrawRay(transform.position,dir.normalized*2,Color.blue);
 		float angle = Vector3.Angle(dir, forwardDir);
+		//Debug.Log (angle);
+
 		Vector3 cross= Vector3.Cross(dir, forwardDir);
 		if (cross.y < 0) angle = -angle;
 //	___________ Angle direction		
