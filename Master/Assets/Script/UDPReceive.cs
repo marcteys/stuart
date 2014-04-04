@@ -48,6 +48,7 @@ public class UDPReceive : MonoBehaviour {
 	public bool debugMode = false;
 
 	public AstarAI_light AIScript;
+	private UDPSend UDPSendScript;
 	// start from shell
 	private static void Main()  {
 		UDPReceive receiveObj=new UDPReceive();
@@ -62,6 +63,7 @@ public class UDPReceive : MonoBehaviour {
 	// start from unity3d
 	public void Start() {
 		AIScript = GameObject.FindGameObjectWithTag ("Car").GetComponent<AstarAI_light> ();
+		UDPSendScript = this.GetComponent<UDPSend> ();
 
 		cible= GameObject.Find("cible");
 		car= GameObject.Find("Car");
@@ -128,6 +130,7 @@ public class UDPReceive : MonoBehaviour {
 
 				}else if(strs[0]=="CubeForce"){
 					refreshCubeForce(strs[1]+"/"+strs[2]);
+					UDPSendScript.SendMessage("c_"+strs[1]+"/"+strs[2]);
 
 					Debug.Log (strs[2]);
 				}else if(strs[0]=="emergency"){
