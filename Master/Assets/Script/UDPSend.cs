@@ -44,225 +44,119 @@ using System.Threading;
 
 
 
-public class UDPSend : MonoBehaviour
-	
-{
+public class UDPSend : MonoBehaviour {
 	
 	private static int localPort;
-	
-	
-	
+
 	// prefs 
-	
 	public string IP;  // define in init
-	
 	public int port;  // define in init
 
-
 	public GameObject car; 
-
 	public GameObject cible;
 
-
 	// "connection" things
-	
 	IPEndPoint remoteEndPoint;
-	
 	UdpClient client;
-	
 
 	
 	//ben add
-
-
 	string strMessage="";
 	
 	float intervalTimer=0.0f; 
 	float interval=0.0f;
-	
-	
+
 	
 	// call it from shell (as program)
 	
-	public static void Main() 
-		
-	{
+	public static void Main() {
 		
 		UDPSend sendObj=new UDPSend();
-		
 		sendObj.init();
-		
-
-		
 		// testing via console
-		
 		// sendObj.inputFromConsole();
-		
-		
-		
+
 		// as server sending endless
-		
 		sendObj.sendEndless(" endless infos \n");
-		
-		
-		
+
 	}
 	
 	// start from unity3d
 
 	public void ChangeIP(){
 
-
 		
 	}
 	
-	public void Start()
-		
-	{
-		
+	public void Start() {
 		init(); 
 
 		cible=GameObject.Find("cible");
 		car=GameObject.Find("Car");
 
-		InvokeRepeating("refreshVector",1,0.1f);
+		InvokeRepeating("refreshVector",1,0.05f);
 	
 	}
 	
 
 	public void refreshVector(){
 
+		Vector3 cibletempo = new Vector3 (cible.transform.localPosition.x, 0, cible.transform.localPosition.z);
+		Vector3 cartempo = new Vector3 (car.transform.localPosition.x, 0, car.transform.localPosition.z);
+		Vector3 vecteurCible = cibletempo-cartempo;
 
+		Quaternion rotateVectorAboutY = Quaternion.AngleAxis(-car.transform.eulerAngles.y, Vector3.up);
+		Vector3 afterRotation = rotateVectorAboutY * vecteurCible;
+		
 
-
-		Vector3 vector= cible.transform.position-car.transform.position;
-		//vector=Quaternion.AngleAxis(180,Vector3.up);
-	
-
-		sendString("Pointer/"+vector.ToString("G4").Replace("(","").Replace(")",""));
-
+		Debug.DrawRay (Vector3.zero, afterRotation, Color.yellow);
+		sendString("Pointer/"+afterRotation.ToString("G4").Replace("(","").Replace(")",""));
 
 	}
 
+	
 
 
 	// init
-	
-	public void init()
-		
-	{
+	public void init() {
 		
 		// Endpunkt definieren, von dem die Nachrichten gesendet werden.
-		
 		print("UDPSend.init()");
-		
-		
-		
-		// define
-		
-	//	IP="192.168.0.17";
-		
-	//	port=8051;
-		
-		
-		
-		// ----------------------------
-		
-		// Senden
-		
-		// ----------------------------
-		
+	
 		remoteEndPoint = new IPEndPoint(IPAddress.Parse(IP), port);
-		
 		client = new UdpClient();
-		
-		
-		
-		// status
-		
+
 		print("Sending to "+IP+" : "+port);
-		
 		print("Testing: nc -lu "+IP+" : "+port);
-		
-		
+
 		
 	}
-	
-	
-	
 
-	
-	
 	
 	// sendData
 	
-	public void sendString(string message)
-		
-	{
-		
-		try 
-			
-		{
-			
-			//if (message != "") 
-			
-			//{
-			
-			
-			
+	public void sendString(string message) {
+		try {
 			// Daten mit der UTF8-Kodierung in das Binärformat kodieren.
-			
 			byte[] data = Encoding.UTF8.GetBytes(message);
 			
-			
-			
 			// Den message zum Remote-Client senden.
-			
 			client.Send(data, data.Length, remoteEndPoint);
 			
 			//}
-			
-		}
-		
-		catch (Exception err)
-			
-		{
-			
+		} catch (Exception err) {
 			print(err.ToString());
-			
 		}
 		
 	}
-	
-	
-	
-	
+
 	
 	// endless test
 	
-	private void sendEndless(string testStr)
-		
-	{
-		
-		do
-			
-		{
-			
-			sendString(testStr);
-			
-			
-			
-			
-			
-		}
-		
-		while(true);
-		
-		
-		
+	private void sendEndless(string testStr) {
+		 do {
+			 sendString(testStr);
+		 } while(true);
 	}
-	
 
-
-	
 }

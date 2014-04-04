@@ -19,7 +19,7 @@ public class AstarAI_light : MonoBehaviour {
 	public bool canSearch = true;
 	public bool canMove = true;
 
-
+	public float coefForceField=1;
 	protected float lastPathSearch = -9999;
 
 	protected Seeker seeker;
@@ -44,12 +44,15 @@ public class AstarAI_light : MonoBehaviour {
 	private GameObject car;
 	private GameObject cible;
 
+
+	public bool emergencyStop = false;
+
 	public void Start () {
 		//Get a reference to the Seeker component we added earlier
 		seeker = GetComponent<Seeker>();
 
 		com = gameObject.GetComponent<Com>();
-		receive = gameObject.GetComponent<UDPReceive>();
+		receive = GameObject.Find("Camera").GetComponent<UDPReceive>();
 		car= GameObject.Find("Car");
 		cible= GameObject.Find("cible");
 		//Start a new path to the targetPosition, return the result to the OnPathComplete function
@@ -111,7 +114,7 @@ public class AstarAI_light : MonoBehaviour {
 	public virtual void Repath () {
 
 		lastPathSearch = Time.time;
-		//Debug.Log (seeker);
+
 
 		if (seeker == null || target == null || !canSearch || !seeker.IsDone ()) {
 			StartCoroutine (WaitToRepath ());
@@ -139,21 +142,10 @@ public class AstarAI_light : MonoBehaviour {
 
 
 
-
-
-
-
-
-
-
-
-	public void Update () {
+public void Update () {// Start Update
 		
+//	___________ Pas touche Astar
 
-		//Add ben
-		//AstarPath.active.Scan();
-		//if (pathIndex >= path.Length) Debug.Log ("dd");
-	
 		if (path == null || pathIndex >= path.Length || pathIndex < 0 || !canMove) {
 			return;
 		}
@@ -178,179 +170,179 @@ public class AstarAI_light : MonoBehaviour {
 			currentWaypoint.y = tr.position.y;
 		}
 		
-		
+//	___________ Pas touche Astar
+
+
+//	___________ Vector direction
 		Vector3 dir = currentWaypoint - tr.position;
-		
-		// Rotate towards the target
-		//tr.rotation = Quaternion.Slerp (tr.rotation, Quaternion.LookRotation(dir), rotationSpeed * Time.deltaTime);
-		//tr.eulerAngles = new Vector3(0, tr.eulerAngles.y, 0);
-		
-		
-		
-		
-		// add ben ARduino
-		
 		Vector3 forwardDir = transform.forward;
+		Debug.DrawRay(transform.position,forwardDir.normalized*2,Color.red);// Direction real car
+//	___________ Vector direction		 
 
-	
-	
 
-		Debug.DrawRay(transform.position,forwardDir.normalized*2,Color.red);
-		Debug.DrawRay(transform.position,dir.normalized*2,Color.blue);
-		//CUBE FORCE
 
-		foreach (GameObject cube in GameObject.FindGameObjectsWithTag("Cube")) {
+//	___________ Application force cube
+
+		foreach (GameObject cube in GameObject.FindGameObjectsWithTag("Cube")) {    
 				
 		
+		
 			float dist_cube=Vector3.Distance(transform.position,cube.transform.position );
+
 			Vector3 field = cube.transform.position-transform.position;
-
-			field=field.normalized/(dist_cube/2);
-
-
+			field=field.normalized/(dist_cube*4f);
 			int nameCube= int.Parse(cube.gameObject.name.Split('_')[1]);
 
-			//int id= (int) nameCube[1];
-
-
-
-			//float forceField=receive.get_Cube(nameCube).force;
-
-			//Debug.Log(forceField);
-			//dir=dir+(field*forceField);
-
-
-			//Debug.Log(forceField);
-			//Debug.DrawRay(transform.position,dir.normalized*2,Color.blue);
-			Debug.DrawRay(transform.position,field*2,Color.yellow);
 		
-			//Debug.Log( dist_cube);
+    
+	      //  int id= (int) nameCube[1];
+			float forceField=receive.get_Cube(nameCube).force;
+
+
+		    dir=dir+(field*(forceField*-coefForceField));
+
+			Debug.DrawRay(transform.position,field*(forceField*-coefForceField),Color.yellow);
+//			Debug.Log( dist_cube); 
 
 
 		
 		
 		}
+	
+//	___________ Application force cube
 
 
+//	___________ Angle direction
 		Debug.DrawRay(transform.position,dir.normalized*2,Color.blue);
-		
 		float angle = Vector3.Angle(dir, forwardDir);
+		//Debug.Log (angle);
+
 		Vector3 cross= Vector3.Cross(dir, forwardDir);
 		if (cross.y < 0) angle = -angle;
-		
+//	___________ Angle direction		
 	
 
 
+float dist=Vector3.Distance(car.transform.position,cible.transform.position);
 
 
-		//if(angle<60 || angle<60){
-			//Remap(angle,5,100,90,200)
+//	___________ Arduino Car AI
 
-		float dist=Vector3.Distance(car.transform.position,cible.transform.position);
-
-		//Debug.Log (dist);
+	/*
 
 		if(dist>1){
 		
-
-
-
-
-		
-
-		    com.m1_2=(byte) Map(angle,-180,180,255,0);
-			com.m1_1=(byte) Map(angle,-180,180,0,255);
-
-			com.m2_2=(byte) Map(angle,-180,180,255,0);
-			com.m2_1=(byte) Map(angle,-180,180,0,255);
-
-			//if(angle>0)com.m1_1=0;
-			//if(com.m1_1>0)com.m1_2=0;
-
-			//if(com.m2_2>0)com.m2_1=0;
-			//if(com.m2_1>0)com.m2_2=0;
-
-
-
-//		com.m1_1= (byte) Map(angle,-180,180,100,0);
-
-			/*if(angle<1 && angle>1 ){
+			if(angle>-10 && angle<10 ){
 
 				com.m1_1=100;
 				com.m2_1=100;
 
 
-			}else if(angle>1){
+			}else if(angle>10){
 
 				com.m1_1=0;
 				com.m2_1=100;
 
 
 
-			}else if(angle<0){
-
-
+			}else if(angle<-10){
 
 				com.m2_1=0;
 				com.m1_1=100;
 
 			}
-*/
 
-			Debug.Log(com.m2_1+" :: "+com.m1_1);
 
-		}else{
+		 }else{
 
 
 			stopCar();
 
 		}
-		//test
+*/
 
-		//Debug.Log (m1_1);
+
 	
+
+		if(dist>1 && !emergencyStop){
+
+
+
+			if(angle<50 && angle> -50){
+
+				com.m1_2=0;
+				com.m1_1=(byte) Map(angle,-50,50,255,0);
+
+				com.m2_2=0;
+				com.m2_1=(byte) Map(angle,-50,50,0,255);
+
+
+			}else{
+
+
+				if( angle<50 && angle>-180){
+
+				
+
+					com.m1_2= 0;
+					com.m1_1=(byte) Map(angle,-50,-180,100,255);
+					
+					com.m2_2=(byte) Map(angle,-50,-180,100,255);
+					com.m2_1=0;
+
+
+				}else{
+
+
+					//Debug.Log (angle);
+
+					
+					com.m1_2= (byte) Map(angle,50,180,100,255);
+					com.m1_1=0;
+					
+					com.m2_2=0;
+					com.m2_1=(byte) Map(angle,50,180,100,255);
+					
+
+				}
+
+
 			
-		//int m1_1=(byte) Remap(angle,-90,230,90,0);
-		//Debug.Log(m1_1);
-		//if(m1_1<0) m1_1=0;
 
 
-		//Debug.Log (m1_1);
+
+
+
+
+
+			}
+
+
 
 			
-		//}else{
+		}else{
+			
+			
+			stopCar();
+			
+		}
 
 
-			//float dist=Vector3.Distance(other.position, transform.position);
-
-//			Debug.Log (angle);
-			//com.m1_1=(byte) 100;
-			//com.m2_1=(byte) 100;
-
-		
 
 
-		//}
-		//
-		
-		
-		
-		
-		
-		
-		//Move Forwards - forwardDir is already normalized
-//		forwardDir = forwardDir * speed;
-//		forwardDir *= Mathf.Clamp01 (Vector3.Dot (dir.normalized, tr.forward));
-/*		
-		if (navmeshController != null) {
-		} else if (controller != null) {
-			controller.SimpleMove (forwardDir);
-		} else {
-			transform.Translate (forwardDir*Time.deltaTime, Space.World);
-		}*/
-	}
 
-	void OnGUI () {
+
+//	___________ Arduino Car AI
+
+
+
+
+
+	}// End Update
+
+
+	
+	void OnGUI () {// UI pour SCAN
 
 
 
@@ -361,66 +353,12 @@ public class AstarAI_light : MonoBehaviour {
 
 		}
 
-		
-
-
-
-
-
 	}
 
 
 	public virtual void ReachedEndOfPath () {
 		//The AI has reached the end of the path
 	}
-
-
-
-
-	// ENVOI Arduino RIGHT
-	void RightArduino(float angle) {
-
-		/*float interval= Remap(angle,-45f,0.05f,0f,1f);
-		if ( Time.time > lastTimeCheck + interval ) {
-			lastTimeCheck = Time.time;
-			Debug.Log("send -> RIGHT");
-		}*/
-
-
-
-
-		
-	}
-
-	// ENVOI Arduino LEFT
-	void LeftArduino(float angle) {
-
-
-		/*float interval= Remap(angle,45f,0.05f,0f,1f);
-		
-		
-		if ( Time.time > lastTimeCheck + interval ) {
-			lastTimeCheck = Time.time;
-			Debug.Log("send -> LEFT");
-		}*/
-
-
-
-
-		
-	}
-
-
-	//ENVOI Arduino Straight
-
-	void StraightArduino(){
-
-
-
-
-
-	}
-
 
 
 
@@ -436,6 +374,7 @@ public class AstarAI_light : MonoBehaviour {
 		return low2 + (value - low1) * (high2 - low2) / (high1 - low1);
 	}
 
+
 	void stopCar(){
 
 		com.m2_1= 0;
@@ -447,6 +386,9 @@ public class AstarAI_light : MonoBehaviour {
 
 
 
+	void OnDisable(){
 
+		stopCar();
+	}
 
 } 

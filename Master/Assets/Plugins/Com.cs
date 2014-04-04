@@ -2,6 +2,7 @@
 using System.Collections;
 using System.IO.Ports;
 using System.IO;
+using System.Threading;
 
 public class Com : MonoBehaviour {
 
@@ -13,15 +14,21 @@ public class Com : MonoBehaviour {
 	public byte m2_1=0;
 	public byte m2_2=0;
 
-	SerialPort sp = new SerialPort("COM6", 9600);
+	SerialPort sp = new SerialPort("COM3", 9600, Parity.None,8, StopBits.One);
 	// Use this for initialization
+	private string message="";
 
+	float lastTime=0;
+
+
+
+	/*
 	void Awake() {
 
 		foreach(string str in SerialPort.GetPortNames())
 		{
-			Debug.Log( str);
-			sp = new SerialPort(str, 9600);
+		//	Debug.Log( str);
+		//	sp = new SerialPort(str, 9600, Parity.None, 8, StopBits.One);
 			//SerialPort.GetPortNames();
 		}
 
@@ -29,38 +36,48 @@ public class Com : MonoBehaviour {
 
 
 	}
+*/
 
 	void Start () {
 
 
 
-		sp.Open();
-		InvokeRepeating("RepeatingSend", 1, 0.1f);
+		OpenConnection ();
+		StartCoroutine("Arduino");
+		//InvokeRepeating("RepeatingSend", 0.001f, 0.1f);
 	}
 
-	void RepeatingSend () {
+	IEnumerator Arduino()
+	{
+		//actions dans ta coroutine (faisant office d' Update)
+		//(exemple ici comptage des frames)
 
-
-		SendToSerial((byte) m1_1,(byte) m1_2,(byte) m2_1,(byte) m2_2);
-		//Debug.Log ((byte) 252);
-
-	}
-	
-	// Update is called once per frame
-	void Update () {
-
-
-
-		//SendToSerial((byte) 255,(byte) 255, (byte) 255);
-
-
-
+		if (Time.time > lastTime + 0.20f) {
+			
+			lastTime=Time.time;
+			SendToSerial( m1_1, m1_2, m2_1, m2_2);
+		}
 
 		
+		yield return null;
+		RepeatArduino();
 	}
+	
+	//Method qui répète la coroutine
+	void RepeatArduino()
+	{
+		StartCoroutine("Arduino");
+	}
+
+
+
+	
+
 
 
 	public void sendArduino(byte m1_1,byte m2_2,byte m1_2,byte m2_1){
+
+
 
 
 		SendToSerial( m1_1, m1_2, m2_1, m2_2);
@@ -85,5 +102,44 @@ public class Com : MonoBehaviour {
 			}
 		}
 	}
+
+	void OnApplicationQuit() 
+	{
+		sp.Close();
+		Debug.Log ("stop serial");
+	}
+
+
+	public void OpenConnection() 
+	{
+		if (sp != null) 
+		{
+			if (sp.IsOpen) 
+			{
+				sp.Close();
+				message = "Closing port, because it was already open!";
+			}
+			else 
+			{
+				sp.Open();  // opens the connection
+				sp.ReadTimeout = 50;  // sets the timeout value before reporting error
+				message = "Port Opened!";
+			}
+		}
+		else 
+		{
+			if (sp.IsOpen)
+			{
+				print("Port is already open");
+			}
+			else 
+			{
+				print("Port == null");
+			}
+		}
+	}
+
+
+
 
 }
