@@ -19,7 +19,7 @@ public class Seeker : MonoBehaviour {
 	//public bool recalcOnGraphChange = true;
 	
 	public bool drawGizmos = true;
-	public bool detailedGizmos = true;
+	public bool detailedGizmos = false;
 	
 	/** Saves nearest nodes for previous path to enable faster Get Nearest Node calls.
 	 * This variable basically does not a affect anything at the moment. So it is hidden in the inspector */
@@ -477,7 +477,7 @@ public class Seeker : MonoBehaviour {
 			
 			if (lastCompletedNodePath != null) {
 				for (int i=0;i<lastCompletedNodePath.Count-1;i++) {
-					//Gizmos.DrawLine ((Vector3)lastCompletedNodePath[i].position,(Vector3)lastCompletedNodePath[i+1].position);
+					Gizmos.DrawLine ((Vector3)lastCompletedNodePath[i].position,(Vector3)lastCompletedNodePath[i+1].position);
 				}
 			}
 		}
