@@ -1,7 +1,7 @@
 Stuart
 ======
 
-Laval Virtual 2014 -Virtual fantasy demo
+Laval Virtual 2014 - Virtual fantasy demo
 ---------------------------------------------
 
 #The project
@@ -23,14 +23,14 @@ Because we <3 Open Source.
 
 ##Hardware
 * Several **laptops**, to create a webcam network and one other to control the vehicule 
-* Two arduino cards
-* Radio emiter [insert reference here]
+* **Two arduino cards**, 1 vehicule and 1 for the radio emiter
+* Radio emiter component R433A 
 
 ## Software
 * **Unity 4.3**
 
-## Built-In plugins
-* **Vuforia** (include in the package), to track the markers
+## Plugins
+* **Vuforia** (include in the assets), to track the markers
 
 
 
@@ -39,10 +39,11 @@ Because we <3 Open Source.
 
 ## Vehicule creation
 
-
 ## Set up the webcam network for vuforia
 
 ## Set up the Master server
+
+
 ###Arduino Radio code
 
 
