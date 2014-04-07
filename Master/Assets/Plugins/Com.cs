@@ -15,7 +15,7 @@ public class Com : MonoBehaviour {
 	
 	private string eventName = "";
 	private string eventData  = "";
-	private int counter  = 0;
+//	private int counter  = 0;
 
 	public string messageData ;
 	public UDPPacketIO udp;
@@ -35,7 +35,7 @@ public class Com : MonoBehaviour {
 	// Use this for initialization
 	private string message="";
 
-	float lastTime=0;
+//	float lastTime=0;
 
 
 	void Start () {
@@ -51,7 +51,7 @@ public class Com : MonoBehaviour {
 
 
 	void Update () {	
-		counter++;
+	//	counter++;
 		messageData=m1_1+"/"+m1_2+"/"+m2_1+"/"+m2_2;
 
 
