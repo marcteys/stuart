@@ -1,11 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.IO.Ports;
-using System.IO;
 using System;
-using System.Threading;
 
 public class Com : MonoBehaviour {
+
+
+
+
+	// OSC========
+	public string UDPHost  = "127.0.0.1";
+	private int listenerPort = 8000;
+	public int broadcastPort  = 57131;
+	private Osc oscHandler ;
+	
+	private string eventName = "";
+	private string eventData  = "";
+	private int counter  = 0;
+
+	public string messageData ;
+	public UDPPacketIO udp;
+	// OSC========
+
+
 
 	public bool outputToSerial=true;
 
@@ -15,165 +31,50 @@ public class Com : MonoBehaviour {
 	public byte m2_1=0;
 	public byte m2_2=0;
 
-	SerialPort sp = new SerialPort("COM3", 9600, Parity.None,8, StopBits.One);
+
 	// Use this for initialization
 	private string message="";
 
 	float lastTime=0;
 
-	Thread myThread;
-
-
-	/* 
-	void Awake() {
-
-		foreach(string str in SerialPort.GetPortNames())
-		{
-		//	Debug.Log( str);
-		//	sp = new SerialPort(str, 9600, Parity.None, 8, StopBits.One);
-			//SerialPort.GetPortNames();
-		}
-
-		//Debug.Log (SerialPort.GetPortNames() );
-
-
-	}
-*/
 
 	void Start () {
 
-
-
-		OpenConnection ();
-
-
-		//StartCoroutine("Arduino");
-		//InvokeRepeating("RepeatingSend", 0.001f, 0.1f);
-
-
-		myThread = new Thread(new ThreadStart(ThreadArduino));
-		myThread.Start();
+		udp  = this.GetComponent<UDPPacketIO>();
+		udp.init(UDPHost, broadcastPort, listenerPort);
+		oscHandler = this.GetComponent<Osc>();
+		oscHandler.init(udp);
 
 
 	}
-	/*
-	IEnumerator Arduino()
-	{
-		//actions dans ta coroutine (faisant office d' Update)
-		//(exemple ici comptage des frames)
 
-		if (Time.time > lastTime + 0.10f) {
-			
-			lastTime=Time.time;
-			SendToSerial( m1_1, m1_2, m2_1, m2_2);
-		}
 
+
+	void Update () {	
+		counter++;
+		messageData=m1_1+"/"+m1_2+"/"+m2_1+"/"+m2_2;
+
+
+		sendMessage(messageData);
+	}	
+
+
+
+
+	void sendMessage(string message )
+	{	
+		oscHandler.Send(Osc.StringToOscMessage(message)); 
 		
-		yield return null;
-		RepeatArduino();
-	}
-
-
-	//Method qui répète la coroutine
-	void RepeatArduino()
-	{
-		StartCoroutine("Arduino");
-	}
-
-*/
-
-
-
-	private void ThreadArduino(){
-		
-		while(myThread.IsAlive)
-		{
-			SendToSerial( m1_1, m1_2, m2_1, m2_2);
-			Debug.Log ("sendarduino");
-			Thread.Sleep(100);
-			
-		}
+	} 
+	
+	
+	void OnApplicationQuit () {
+		sendMessage("##end##");
+		udp.Close();
 	}
 
 
 
-	public void sendArduino(byte m1_1,byte m2_2,byte m1_2,byte m2_1){
-
-
-
-
-		SendToSerial( m1_1, m1_2, m2_1, m2_2);
-
-
-	}
-
-
-
-
-	void SendToSerial(params byte[] cmd)
-	{
-
-
-
-		if (outputToSerial) 
-		{
-			if (sp.IsOpen){
-				try { 
-					sp.Write( cmd, 0, cmd.Length );
-				}
-				catch (Exception e) 
-				{
-					Debug.LogWarning(e);
-				}
-			}
-		}
-
-	}
-
-	void OnApplicationQuit() 
-	{
-
-		sp.Close();
-		myThread.Abort ();
-		Debug.Log ("stop serial");
-
-
-	}
-
-
-	public void OpenConnection() 
-	{  
-		if (sp != null) 
-		{
-			if (sp.IsOpen) 
-			{
-				sp.Close();
-				message = "Closing port, because it was already open!";
-			}
-			else 
-			{
-				sp.Open();  // opens the connection
-				Debug.Log ( "Port Opened!");
-				sp.ReadTimeout = 50;  // sets the timeout value before reporting error
-				sp.WriteTimeout=100;
-				sp.DtrEnable=true;
-				sp.RtsEnable=true;
-
-
-			}
-		}
-		else 
-		{
-			if (sp.IsOpen)
-			{
-				print("Port is already open");
-			}
-			else 
-			{
-				print("Port == null");
-			}
-		}
-	}
 
 
 
