@@ -22,6 +22,10 @@ public class UDPSend : MonoBehaviour {
 	IPEndPoint remoteEndPoint;
 	UdpClient client;
 
+
+	// Vector pointer 
+	private Vector3 afterRotation;
+
 	
 	//ben add
 	string strMessage="";
@@ -54,21 +58,29 @@ public class UDPSend : MonoBehaviour {
 		cible=GameObject.Find("cible");
 		car=GameObject.Find("Car");
 
-		InvokeRepeating("refreshVector",1,0.05f);
+		InvokeRepeating("refreshVector",1,0.1f);
 	
 	}
-	
 
-	public void refreshVector(){
+
+	public void Update(){
+
+
 		Vector3 cibletempo = new Vector3 (cible.transform.localPosition.x, 0, cible.transform.localPosition.z);
 		Vector3 cartempo = new Vector3 (car.transform.localPosition.x, 0, car.transform.localPosition.z);
 		Vector3 vecteurCible = cibletempo-cartempo;
-
-		Quaternion rotateVectorAboutY = Quaternion.AngleAxis(-car.transform.eulerAngles.y, Vector3.up);
-		Vector3 afterRotation = rotateVectorAboutY * vecteurCible;
 		
-
+		Quaternion rotateVectorAboutY = Quaternion.AngleAxis(-car.transform.eulerAngles.y, Vector3.up);
+		afterRotation = rotateVectorAboutY * vecteurCible;
+		
+		
 		Debug.DrawRay (Vector3.zero, afterRotation, Color.yellow);
+
+
+	}
+
+	public void refreshVector(){
+
 		sendString("Pointer/"+afterRotation.ToString("G4").Replace("(","").Replace(")",""));
 
 	}
