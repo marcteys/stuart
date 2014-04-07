@@ -58,7 +58,7 @@ public class UDPSend : MonoBehaviour {
 		cible=GameObject.Find("cible");
 		car=GameObject.Find("Car");
 
-		InvokeRepeating("refreshVector",1,0.1f);
+		InvokeRepeating("refreshVector",1,0.05f);
 	
 	}
 
@@ -82,6 +82,7 @@ public class UDPSend : MonoBehaviour {
 	public void refreshVector(){
 
 		sendString("Pointer/"+afterRotation.ToString("G4").Replace("(","").Replace(")",""));
+//		Debug.Log ("Pointer/"+afterRotation.ToString("G4").Replace("(","").Replace(")",""));
 
 	}
 

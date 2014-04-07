@@ -2,6 +2,7 @@
 using System.Collections;
 using System.IO.Ports;
 using System.IO;
+using System;
 using System.Threading;
 
 public class Com : MonoBehaviour {
@@ -20,9 +21,10 @@ public class Com : MonoBehaviour {
 
 	float lastTime=0;
 
+	Thread myThread;
 
 
-	/*
+	/* 
 	void Awake() {
 
 		foreach(string str in SerialPort.GetPortNames())
@@ -43,16 +45,24 @@ public class Com : MonoBehaviour {
 
 
 		OpenConnection ();
-		StartCoroutine("Arduino");
-		//InvokeRepeating("RepeatingSend", 0.001f, 0.1f);
-	}
 
+
+		//StartCoroutine("Arduino");
+		//InvokeRepeating("RepeatingSend", 0.001f, 0.1f);
+
+
+		myThread = new Thread(new ThreadStart(ThreadArduino));
+		myThread.Start();
+
+
+	}
+	/*
 	IEnumerator Arduino()
 	{
 		//actions dans ta coroutine (faisant office d' Update)
 		//(exemple ici comptage des frames)
 
-		if (Time.time > lastTime + 0.20f) {
+		if (Time.time > lastTime + 0.10f) {
 			
 			lastTime=Time.time;
 			SendToSerial( m1_1, m1_2, m2_1, m2_2);
@@ -62,16 +72,28 @@ public class Com : MonoBehaviour {
 		yield return null;
 		RepeatArduino();
 	}
-	
+
+
 	//Method qui répète la coroutine
 	void RepeatArduino()
 	{
 		StartCoroutine("Arduino");
 	}
 
+*/
 
 
-	
+
+	private void ThreadArduino(){
+		
+		while(myThread.IsAlive)
+		{
+			SendToSerial( m1_1, m1_2, m2_1, m2_2);
+			Debug.Log ("sendarduino");
+			Thread.Sleep(100);
+			
+		}
+	}
 
 
 
@@ -86,32 +108,41 @@ public class Com : MonoBehaviour {
 	}
 
 
+
+
 	void SendToSerial(params byte[] cmd)
 	{
-		
+
+
+
 		if (outputToSerial) 
 		{
 			if (sp.IsOpen){
 				try { 
 					sp.Write( cmd, 0, cmd.Length );
 				}
-				catch (System.Exception ex) 
+				catch (Exception e) 
 				{
-					Debug.LogWarning(ex);
+					Debug.LogWarning(e);
 				}
 			}
 		}
+
 	}
 
 	void OnApplicationQuit() 
 	{
+
 		sp.Close();
+		myThread.Abort ();
 		Debug.Log ("stop serial");
+
+
 	}
 
 
 	public void OpenConnection() 
-	{
+	{  
 		if (sp != null) 
 		{
 			if (sp.IsOpen) 
@@ -122,8 +153,13 @@ public class Com : MonoBehaviour {
 			else 
 			{
 				sp.Open();  // opens the connection
+				Debug.Log ( "Port Opened!");
 				sp.ReadTimeout = 50;  // sets the timeout value before reporting error
-				message = "Port Opened!";
+				sp.WriteTimeout=100;
+				sp.DtrEnable=true;
+				sp.RtsEnable=true;
+
+
 			}
 		}
 		else 
