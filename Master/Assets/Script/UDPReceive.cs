@@ -6,13 +6,17 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-
+using Pathfinding;
 
 public class UDPReceive : MonoBehaviour {
 	// receiving Thread
 	Thread receiveThread; 
 	public GameObject cible;
 	Vector3 relative;
+
+
+	private bool rescan = false;
+
 
 	public GameObject car;
 	public Vector3 pos;
@@ -68,7 +72,7 @@ public class UDPReceive : MonoBehaviour {
 		cible= GameObject.Find("cible");
 		car= GameObject.Find("Car");
 		cam = GameObject.Find ("Camera");
-
+	
 		init(); 
 	}
 
@@ -137,7 +141,17 @@ public class UDPReceive : MonoBehaviour {
 
 					AIScript.emergencyStop = true;
 
+				}else if(strs[0]=="restart"){
+					
+					AIScript.emergencyStop = false;
+					
+				}else if(strs[0]=="rescan"){
+
+
+					rescan=true;
+
 				}
+
 			}
 			
 			catch (Exception err) {
@@ -270,7 +284,11 @@ public class UDPReceive : MonoBehaviour {
 	void Update () {
 		//Update Cible
 	
-
+		if (rescan) {
+				
+			AstarPath.active.Scan();
+			rescan=false;
+		}
 
 
 		//Update Car
