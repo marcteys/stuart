@@ -30,6 +30,10 @@ public class UDPReceive : MonoBehaviour {
 
 	Vector3[] allPos = new Vector3[10]; // tableau des cams 
 	Quaternion[] allRot = new Quaternion[10]; // tableau des cams 
+
+
+	Vector3 carPos ; // tableau des cams 
+	Quaternion carRot; // tableau des cams 
 	//
 	public bool pointerCheck=false;
 	 
@@ -185,8 +189,8 @@ public class UDPReceive : MonoBehaviour {
 					myCubes.Add(new Cube(int.Parse(infos[1]),sTov3(infos[3]),sToQ(infos[4])));
 				}else{
 					Cube tempo=get_Cube(int.Parse(infos[1]));
-					tempo.moy[int.Parse (idcam)-1]=sTov3(infos[3]);
-					tempo.pos=tempo.get_pos();
+
+					tempo.pos=sTov3(infos[3]);
              	}
 			}
 		}
@@ -222,9 +226,16 @@ public class UDPReceive : MonoBehaviour {
 
 		string []  datas =data.Split(';');
 
-
+		/*
 		allPos[int.Parse(idcam)] = sTov3 (datas [1]);
 		allRot[int.Parse(idcam)] = sToQ (datas [2]);
+*/
+
+
+		carPos = sTov3 (datas [1]);
+		carRot = sToQ (datas [2]);
+
+
 		if(debugMode) Debug.Log ("cam " +int.Parse(idcam)+ " valeurs " + sTov3 (datas [1]));
 
 
@@ -291,7 +302,7 @@ public class UDPReceive : MonoBehaviour {
 		}
 
 
-		//Update Car
+	/*	//Update Car
 		float min = 9999;
 		int idMin = 0;
 		for (int i = 0; i < allPos.Length; i++) {
@@ -306,6 +317,13 @@ public class UDPReceive : MonoBehaviour {
 
 		car.transform.position = allPos [idMin];
 		car.transform.rotation = allRot [idMin];
+
+*/
+
+		car.transform.position =  Vector3.Lerp(car.transform.position,carPos,4*Time.deltaTime);
+		car.transform.rotation = Quaternion.Lerp(car.transform.rotation,carRot,4*Time.deltaTime);
+
+
 
 		//vider le tableau
 		// System.Array.Clear (allPos,0,allPos.Length);
@@ -330,8 +348,11 @@ public class UDPReceive : MonoBehaviour {
 
 				}else{
 					GameObject b =GameObject.Find("c_"+c.id);
-					b.transform.position=c.pos;
-					//b.transform.eulerAngles=new Vector3(0,c.rot.y,0);
+
+				b.transform.position=Vector3.Lerp(b.transform.position,c.pos,Time.deltaTime);
+				//b.transform.position=c.pos;
+
+				//b.transform.eulerAngles=new Vector3(0,c.rot.y,0);
 				b.transform.rotation=c.rot;
 
 				//lock cube pos
@@ -395,11 +416,10 @@ public class Cube {
 	public Vector3 get_pos(){
 		total= Vector3.zero;
 
-		for(int i=0; i<moy.Length; i++){
-			total= total+moy[i];
-		}
+			total=moy[0];
 
-		return total/moy.Length;
+
+		return total;
 	}
 
 }
